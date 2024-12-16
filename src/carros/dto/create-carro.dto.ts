@@ -4,6 +4,3 @@ export class CreateCarroDto {
 
     userId: string;
 }
-
-
-//nest g resources carro (nome, userid, )

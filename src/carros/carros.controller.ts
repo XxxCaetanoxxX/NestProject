@@ -13,22 +13,22 @@ export class CarrosController {
   }
 
   @Get()
-  findAll() {
+   findAll() {
     return this.carrosService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.carrosService.findOne(+id);
+    return this.carrosService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCarroDto: UpdateCarroDto) {
-    return this.carrosService.update(+id, updateCarroDto);
+    return this.carrosService.update(id, updateCarroDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.carrosService.remove(+id);
+    return this.carrosService.remove(id);
   }
 }
