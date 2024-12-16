@@ -24,9 +24,9 @@ describe('UserService', () => {
     }
   })
 
-  describe('createUser', ()=> {
-    it('deve retornar usuario criado', async () => {
-      const user = {}
+  describe('getUsers', ()=> {
+    it.only('deve retornar usuarios', async () => {
+      
     })
   })
 

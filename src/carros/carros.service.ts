@@ -23,30 +23,22 @@ export class CarrosService {
 
   async findOne(id: string) {
     const carro = await prisma.carro.findFirst({
-      where: {
-          id: id
-      },
+      where: {id}
   })
   return carro;
   }
 
   async update(id: string, updateCarroDto: UpdateCarroDto) {
     const car = await prisma.carro.update({
-      where : {
-        id : id
-      },
-      data: {
-        nome: updateCarroDto.nome
-      }
+      where : {id},
+      data: updateCarroDto
     })
     return `carro ${car.nome} atualizado`
   }
 
   async remove(id: string) {
     await prisma.carro.delete({
-      where: {
-        id: id
-      }
+      where: {id}
     })
   }
 }
