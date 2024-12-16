@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -9,8 +10,15 @@ export class AuthService {
 
   async signIn(name: string, senha: string): Promise<any> {
     const user = await this.userService.findByName(name);
-    if (user?.senha !== senha) {
-      return console.log('Credenciais inválidas')
+
+    if (!user) {
+      return console.log('Usuário não encontrado');
+    }
+    
+    const isSenhaValida = await bcrypt.compare(senha, user.senha);
+    
+    if (!isSenhaValida) {
+      return console.log('Credenciais inválidas');
     }
 
 
