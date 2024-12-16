@@ -10,36 +10,9 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
-
-  async login(loginUserDto: LoginUserDto) {
-
-    // Verifica se o usuário existe
-    const user = await this.findByName(loginUserDto.name);
-    if (!user) {
-      return console.log('usuario nao encontrado')
-    }
-
-    // Verifica se a senha está correta
-    const isSenhaValida = await bcrypt.compare(loginUserDto.senha, user.senha);
-    if (!isSenhaValida) {
-      return console.log('senha incorreta')
-    }
-
-    // Gera o token JWT
-    const token = jwt.sign(
-      { userId: user.id, perfil: user.perfil },
-      process.env.JWT_SECRETY,
-      { expiresIn: '2h' }
-    );
-
-    return { token }; // Retorna o token
-  }
-
   async findByName(name: string) {
     const user = await prisma.user.findFirst({
-      where: {
-        name: name
-      },
+      where: {name},
       include: {
         carros: true,
       }

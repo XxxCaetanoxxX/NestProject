@@ -12,12 +12,6 @@ import * as bcrypt from 'bcrypt';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
-  @Post('/login')
-  async login(@Body() loginUserDto: LoginUserDto){
-    return await this.userService.login(loginUserDto);
-  }
-
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
