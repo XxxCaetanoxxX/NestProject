@@ -4,10 +4,11 @@ import { AppService } from './app.service';
 import { CarrosModule } from './carros/carros.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [CarrosModule, UserModule, AuthModule],
+  imports: [CarrosModule, UserModule, AuthModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
