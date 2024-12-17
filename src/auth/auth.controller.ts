@@ -4,6 +4,7 @@ import { SignInDto } from './dto/signin.dto';
 import { AuthGuard } from './auth.guard'
 import { AuthenticatedRequest } from './authenticated-request'
 import { Public } from './public-route';
+import { Roles } from 'src/authorization/roles.decorator';
 
 
 @Controller('auth')

@@ -12,12 +12,13 @@ export class AuthService {
     const user = await this.userService.findByName(name);
 
     if (!user) {
+
       return console.log('Usuário não encontrado');
     }
-    
+
     const isSenhaValida = await bcrypt.compare(senha, user.senha);
-    
-    if (!isSenhaValida) {
+
+    if (!user || !isSenhaValida) {
       return console.log('Credenciais inválidas');
     }
 
