@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { prisma } from '../prisma/prisma.class'
+import { PrismaService } from 'src/prisma/prisma.service';
+import { User, Prisma } from '@prisma/client'
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
@@ -10,9 +11,11 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly prisma: PrismaService) { }
+
   async findByName(name: string) {
-    const user = await prisma.user.findFirst({
-      where: {name},
+    const user = await this.prisma.user.findFirst({
+      where: { name },
       include: {
         carros: true,
       }
@@ -21,7 +24,7 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    const user = await prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         name: createUserDto.name,
         perfil: createUserDto.perfil,
@@ -32,7 +35,7 @@ export class UserService {
   }
 
   async findAll() {
-    const users = await prisma.user.findMany({
+    const users = await this.prisma.user.findMany({
       include: {
         carros: true,
       }
@@ -41,7 +44,7 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    const user = await prisma.user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: { id },
       include: {
         carros: true,
@@ -51,7 +54,7 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await prisma.user.update({
+    const user = await this.prisma.user.update({
       where: { id },
       data: updateUserDto
 
@@ -60,11 +63,11 @@ export class UserService {
   }
 
   async remove(id: string) {
-    const user = await prisma.user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: { id }
     })
 
-    await prisma.user.delete({
+    await this.prisma.user.delete({
       where: { id }
     })
 
