@@ -4,7 +4,7 @@ import { Perfil } from "@prisma/client";
 
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-        name: string;
-        senha: string;
-        perfil: Perfil;
+    name: string;
+    senha: string;
+    perfil: Perfil;
 }

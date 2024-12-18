@@ -13,7 +13,7 @@ import { APP_GUARD } from '@nestjs/core';
     signOptions: {expiresIn: '2h'}
   })],
   controllers: [AuthController],
-  providers: [AuthService, AuthGuard, {provide:APP_GUARD, useClass: AuthGuard}], //usa globalmente o auth guard
+  providers: [AuthService, AuthGuard], 
   exports: [AuthService, JwtModule]
 })
 export class AuthModule {}
