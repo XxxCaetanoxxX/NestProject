@@ -11,14 +11,13 @@ export class CarrosController {
   constructor(private readonly carrosService: CarrosService) { }
 
   @Post()
+  @UseGuards(RolesGuard)
+  @Roles(Role.GERENTE, Role.ADMIN)
   create(@Body() createCarroDto: CreateCarroDto) {
     return this.carrosService.create(createCarroDto);
   }
 
   @Get()
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.GERENTE)
-  // @Roles(Perfis.GERENTE, Perfis.PADRAO, Perfis.ADMIN)
   findAll() {
     return this.carrosService.findAll();
   }
@@ -29,11 +28,15 @@ export class CarrosController {
   }
 
   @Patch(':id')
+  @UseGuards(RolesGuard)
+  @Roles(Role.GERENTE, Role.ADMIN)
   update(@Param('id') id: string, @Body() updateCarroDto: UpdateCarroDto) {
     return this.carrosService.update(id, updateCarroDto);
   }
 
   @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles(Role.GERENTE, Role.ADMIN)
   remove(@Param('id') id: string) {
     return this.carrosService.remove(id);
   }
