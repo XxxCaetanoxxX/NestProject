@@ -1,4 +1,3 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -24,9 +23,9 @@ describe('UserService', () => {
     }
   })
 
-  describe('getUsers', ()=> {
+  describe('getUsers', () => {
     it.only('deve retornar usuarios', async () => {
-      
+
     })
   })
 
