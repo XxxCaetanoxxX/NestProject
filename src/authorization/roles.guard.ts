@@ -1,4 +1,3 @@
-// roles.guard.ts
 import {
     Injectable, CanActivate, ExecutionContext, UnauthorizedException,
 } from '@nestjs/common';

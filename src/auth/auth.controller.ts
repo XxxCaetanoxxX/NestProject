@@ -17,6 +17,8 @@ export class AuthController {
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto.name, signInDto.senha);
   }
+
+  
   @UseGuards(AuthGuard)
   @Get('perfil')
   getProfile(@Request() req: AuthenticatedRequest) {

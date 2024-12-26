@@ -43,5 +43,6 @@ export class CarrosService {
     await this.prisma.carro.delete({
       where: { id }
     })
+    return 'Carro deletado'
   }
 }

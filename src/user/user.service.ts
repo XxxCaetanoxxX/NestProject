@@ -3,7 +3,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User, Prisma } from '@prisma/client'
-import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
@@ -56,12 +55,18 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    const senhaCriptografada = await bcrypt.hash(updateUserDto.senha, 10);
+
     const user = await this.prisma.user.update({
       where: { id },
-      data: updateUserDto
+      data: {
+        name: updateUserDto.name,
+        perfil: updateUserDto.perfil,
+        senha: senhaCriptografada
+      }
 
     })
-    return `This action updates a #${user.name} user`;
+    return `This action updates a ${user.name} user`;
   }
 
   async remove(id: string) {
