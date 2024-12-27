@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CarrosService } from './carros.service';
 import { CreateCarroDto } from './dto/create-carro.dto';
 import { UpdateCarroDto } from './dto/update-carro.dto';
 import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
+import { FindAlLCarsDto } from './dto/find-all-cars.dto';
 
 @Controller('carros')
 export class CarrosController {
@@ -18,8 +19,8 @@ export class CarrosController {
   }
 
   @Get()
-  findAll() {
-    return this.carrosService.findAll();
+  findAll(@Query() findAllCarsDto : FindAlLCarsDto) {
+    return this.carrosService.findAll(findAllCarsDto);
   }
 
   @Get(':id')

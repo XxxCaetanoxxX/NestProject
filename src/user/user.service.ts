@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User, Prisma } from '@prisma/client'
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { FindAllUsersDto } from './dto/find-all-users.dto';
 
 
 
@@ -35,8 +36,13 @@ export class UserService {
     return user;
   }
 
-  async findAll() {
+  async findAll(findAllUsersDto? : FindAllUsersDto) {
+
+    const {limit = 10, offset =0} = findAllUsersDto // caso não receba um dto, esse sera o valor padrao
+
     const users = await this.prisma.user.findMany({
+      take: limit,
+      skip: offset,
       include: {
         carros: true,
       }
@@ -55,9 +61,18 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.prisma.user.findFirst({
+      where: { id },
+      include: {
+        carros: true,
+      }
+    })
+
+    if(!user) throw new NotFoundException("Id do usuário não encontrado!");
+
     const senhaCriptografada = await bcrypt.hash(updateUserDto.senha, 10);
 
-    const user = await this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id },
       data: {
         name: updateUserDto.name,
