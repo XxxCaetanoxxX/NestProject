@@ -68,8 +68,6 @@ export class UserService {
       }
     })
 
-    if(!user) throw new NotFoundException("Id do usuário não encontrado!");
-
     const senhaCriptografada = await bcrypt.hash(updateUserDto.senha, 10);
 
     await this.prisma.user.update({

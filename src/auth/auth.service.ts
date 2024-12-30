@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -14,7 +14,7 @@ export class AuthService {
     const isSenhaValida = user && await bcrypt.compare(senha, user.senha); //se o usuario existir e a comparação das senhas retornar true
 
     if (!user || !isSenhaValida) {
-      throw new HttpException("Credenciais inválidas!", HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException("Credenciais inválidas!");
     }
 
     // Gera o token JWT
