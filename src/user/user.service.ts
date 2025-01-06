@@ -2,16 +2,14 @@ import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestj
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User, Prisma } from '@prisma/client'
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
-
-
+import { HashingService } from 'src/hashing/hashing.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService, 
+    private readonly hashingService: HashingService) { }
 
   async findByName(name: string) {
     const user = await this.prisma.user.findFirst({
@@ -24,7 +22,7 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    const senhaCriptografada = await bcrypt.hash(createUserDto.senha, 10);
+    const senhaCriptografada = await this.hashingService.hash(createUserDto.senha)
 
     const user = await this.prisma.user.create({
       data: {
@@ -68,7 +66,7 @@ export class UserService {
       }
     })
 
-    const senhaCriptografada = await bcrypt.hash(updateUserDto.senha, 10);
+    const senhaCriptografada = await  this.hashingService.hash(updateUserDto.senha);
 
     await this.prisma.user.update({
       where: { id },

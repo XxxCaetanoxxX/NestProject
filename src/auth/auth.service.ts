@@ -2,16 +2,18 @@ import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@n
 import { UserService } from '../user/user.service';
 import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { HashingService } from 'src/hashing/hashing.service';
 
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+    private hashingService: HashingService) { }
 
   async signIn(name: string, senha: string): Promise<any> {
 
     const user = await this.userService.findByName(name); 
-    const isSenhaValida = user && await bcrypt.compare(senha, user.senha); //se o usuario existir e a comparação das senhas retornar true
+    const isSenhaValida = user && this.hashingService.compare(senha, user.senha) //se o usuario existir e a comparação das senhas retornar true
 
     if (!user || !isSenhaValida) {
       throw new UnauthorizedException("Credenciais inválidas!");
