@@ -66,9 +66,13 @@ export class UserService {
       }
     })
 
+    if (!user) {
+      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+    }
+
     const senhaCriptografada = await  this.hashingService.hash(updateUserDto.senha);
 
-    await this.prisma.user.update({
+    const updatedUser=await this.prisma.user.update({
       where: { id },
       data: {
         name: updateUserDto.name,
@@ -77,7 +81,7 @@ export class UserService {
       }
 
     })
-    return `This action updates a ${user.name} user`;
+    return updatedUser;
   }
 
   async remove(id: string) {

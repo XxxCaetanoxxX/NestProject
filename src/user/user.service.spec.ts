@@ -5,6 +5,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { HashingService } from 'src/hashing/hashing.service';
 import { Perfil } from '@prisma/client';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UserService', () => {
 
@@ -135,6 +136,44 @@ describe('UserService', () => {
       })
 
       expect(result).toEqual(mockUser);
+    })
+  })
+
+  describe('testes de atualizar usuário', ()=>{
+    it('deve atualizar um usuário', async()=>{
+      const updateUserDto: UpdateUserDto = { name: 'Paula'};
+      const mockUser = {
+        name: "Paulo",
+        id: "676d7947c693027d8298c5ab",
+        perfil: Perfil.PADRAO,
+        senha: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
+      }
+
+      const updatedUser = {
+        name: "Paula",
+        id: "676d7947c693027d8298c5ab",
+        perfil: Perfil.PADRAO,
+        senha: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
+      }
+
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser)
+      jest.spyOn(prismaService.user, 'update').mockResolvedValue(updatedUser)
+
+      const result = await userService.update(mockUser.id, updateUserDto)
+      console.log(result)
+
+      expect(result).toEqual(updatedUser)
+
+    })
+
+    it.only('deve lançar um erro quando usuario nao for encontrado', async()=>{
+      const updateUserDto : UpdateUserDto ={name:'Gilson'};
+
+      jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null)
+
+      await expect(userService.update("676d7947c693027d8",updateUserDto)).rejects.toThrow(
+        new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
+      )
     })
   })
 
