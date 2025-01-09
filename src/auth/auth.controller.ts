@@ -4,12 +4,14 @@ import { SignInDto } from './dto/signin.dto';
 import { AuthGuard } from './auth.guard'
 import { AuthenticatedRequest } from './authenticated-request'
 import { Public } from './public-route';
-import { Roles } from 'src/authorization/roles.decorator';
+import { UserService } from 'src/user/user.service';
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService,
+    private readonly userService: UserService
+  ) { }
 
   @Public()
   @HttpCode(HttpStatus.OK)
@@ -18,10 +20,10 @@ export class AuthController {
     return this.authService.signIn(signInDto.name, signInDto.senha);
   }
 
-  
+
   @UseGuards(AuthGuard)
   @Get('perfil')
   getProfile(@Request() req: AuthenticatedRequest) {
-    return req.user
+    return this.userService.findOne(req.user['userId'])
   }
 }
