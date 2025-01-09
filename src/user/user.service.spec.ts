@@ -23,8 +23,8 @@ describe('UserService', () => {
             user: {
               create: jest.fn().mockResolvedValue({
                 name: 'Paula',
-                senha: 'dpmg123',
-                perfil: 'ADMIN'
+                password: 'dpmg123',
+                profile: 'ADMIN'
               }),
               findFirst: jest.fn(),
               update: jest.fn(),
@@ -69,7 +69,7 @@ describe('UserService', () => {
         data: {
           name: createUserDto.name,
           profile: createUserDto.profile,
-          senha: 'hash_mock'
+          password: 'hash_mock'
         }
       })
 
@@ -92,7 +92,7 @@ describe('UserService', () => {
         data: {
           name: createUserDto.name,
           profile: createUserDto.profile,
-          senha: "hash_mock"
+          password: "hash_mock"
         }
       })
     })
