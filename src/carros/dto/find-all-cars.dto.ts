@@ -1,17 +1,17 @@
 import { Type } from "class-transformer";
-import { IsInt, IsOptional, Max, Min} from "class-validator";
+import { IsInt, IsOptional, Max, Min } from "class-validator";
 
-export class FindAlLCarsDto{
+export class FindAlLCarsDto {
     @IsOptional()
     @IsInt()
-    @Type(()=>Number) //tenta converter string para numero
+    @Type(() => Number) //tenta converter string para numero
     @Min(5)
     @Max(50)
-    limit: number;
+    limit: number = 10;
 
     @IsOptional()
     @IsInt()
-    @Type(()=>Number)
+    @Type(() => Number)
     @Min(0)
-    offset:number;
+    offset: number = 0;
 }

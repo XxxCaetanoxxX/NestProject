@@ -20,13 +20,10 @@ export class CarrosService {
     return carro;
   }
 
-  async findAll(findAllCarsDto : FindAlLCarsDto) {
-
-    const {limit=10, offset=0} = findAllCarsDto
-
+  async findAll(findAllCarsDto: FindAlLCarsDto) {
     const carros = await this.prisma.carro.findMany({
-      take: limit,
-      skip: offset
+      take: findAllCarsDto.limit,
+      skip: findAllCarsDto.offset
     })
     return carros;
   }

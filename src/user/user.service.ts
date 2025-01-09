@@ -8,7 +8,7 @@ import { HashingService } from 'src/hashing/hashing.service';
 @Injectable()
 export class UserService {
   constructor(
-    private readonly prisma: PrismaService, 
+    private readonly prisma: PrismaService,
     private readonly hashingService: HashingService) { }
 
   async findByName(name: string) {
@@ -34,13 +34,11 @@ export class UserService {
     return user;
   }
 
-  async findAll(findAllUsersDto? : FindAllUsersDto) {
-
-    const {limit = 10, offset =0} = findAllUsersDto // caso não receba um dto, esse sera o valor padrao
+  async findAll(findAllUsersDto?: FindAllUsersDto) {
 
     const users = await this.prisma.user.findMany({
-      take: limit,
-      skip: offset,
+      take: findAllUsersDto.limit,
+      skip: findAllUsersDto.offset,
       include: {
         carros: true,
       }
@@ -70,9 +68,9 @@ export class UserService {
       throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
 
-    const senhaCriptografada = await  this.hashingService.hash(updateUserDto.senha);
+    const senhaCriptografada = await this.hashingService.hash(updateUserDto.senha);
 
-    const updatedUser=await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id },
       data: {
         name: updateUserDto.name,
