@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Test, TestingModule } from "@nestjs/testing";
 import { HashingService } from 'src/hashing/hashing.service';
-import { Perfil } from '@prisma/client';
+import { Profile } from '@prisma/client';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -54,8 +54,8 @@ describe('UserService', () => {
 
       const createUserDto: CreateUserDto = {
         name: 'Paula',
-        senha: 'dpmg123',
-        perfil: 'ADMIN'
+        password: 'dpmg123',
+        profile: 'ADMIN'
       }
 
       jest.spyOn(hashingService, 'hash').mockResolvedValue("hash_mock")
@@ -68,22 +68,22 @@ describe('UserService', () => {
       expect(prismaService.user.create).toHaveBeenCalledWith({
         data: {
           name: createUserDto.name,
-          perfil: createUserDto.perfil,
+          profile: createUserDto.profile,
           senha: 'hash_mock'
         }
       })
 
     })
 
-    it('deve lançar um erro quando criar um usuario', async ()=>{
+    it('deve lançar um erro quando criar um usuario', async () => {
       const createUserDto: CreateUserDto = {
         name: 'Paula',
-        senha: 'dpmg123',
-        perfil: 'ADMIN'
+        password: 'dpmg123',
+        profile: 'ADMIN'
       }
 
       jest.spyOn(hashingService, 'hash').mockResolvedValue("hash_mock")
-      jest.spyOn(prismaService.user, 'create').mockRejectedValue(new Error ("Usuário inválido!"))
+      jest.spyOn(prismaService.user, 'create').mockRejectedValue(new Error("Usuário inválido!"))
 
       await expect(userService.create(createUserDto)).rejects.toThrow(
         new HttpException('Usuário inválido!', HttpStatus.BAD_REQUEST)
@@ -91,7 +91,7 @@ describe('UserService', () => {
       expect(prismaService.user.create).toHaveBeenCalledWith({
         data: {
           name: createUserDto.name,
-          perfil: createUserDto.perfil,
+          profile: createUserDto.profile,
           senha: "hash_mock"
         }
       })
@@ -108,7 +108,7 @@ describe('UserService', () => {
       )
 
       expect(prismaService.user.findFirst).toHaveBeenCalledWith({
-        where:{
+        where: {
           id: "676d7947c693027d8298c5ab"
         },
       })
@@ -119,8 +119,8 @@ describe('UserService', () => {
       const mockUser = {
         name: "carlos",
         id: "676d7947c693027d8298c5ab",
-        perfil: Perfil.PADRAO,
-        senha: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
+        profile: Profile.DEFAULT,
+        password: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
       }
 
       jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser)
@@ -139,21 +139,21 @@ describe('UserService', () => {
     })
   })
 
-  describe('testes de atualizar usuário', ()=>{
-    it('deve atualizar um usuário', async()=>{
-      const updateUserDto: UpdateUserDto = { name: 'Paula'};
+  describe('testes de atualizar usuário', () => {
+    it('deve atualizar um usuário', async () => {
+      const updateUserDto: UpdateUserDto = { name: 'Paula' };
       const mockUser = {
         name: "Paulo",
         id: "676d7947c693027d8298c5ab",
-        perfil: Perfil.PADRAO,
-        senha: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
+        profile: Profile.DEFAULT,
+        password: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
       }
 
       const updatedUser = {
         name: "Paula",
         id: "676d7947c693027d8298c5ab",
-        perfil: Perfil.PADRAO,
-        senha: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
+        profile: Profile.DEFAULT,
+        password: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
       }
 
       jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser)
@@ -166,12 +166,12 @@ describe('UserService', () => {
 
     })
 
-    it.only('deve lançar um erro quando usuario nao for encontrado', async()=>{
-      const updateUserDto : UpdateUserDto ={name:'Gilson'};
+    it.only('deve lançar um erro quando usuario nao for encontrado', async () => {
+      const updateUserDto: UpdateUserDto = { name: 'Gilson' };
 
       jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null)
 
-      await expect(userService.update("676d7947c693027d8",updateUserDto)).rejects.toThrow(
+      await expect(userService.update("676d7947c693027d8", updateUserDto)).rejects.toThrow(
         new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
       )
     })
@@ -191,8 +191,8 @@ describe('UserService', () => {
       const mockUser = {
         name: "carlos",
         id: "676d7947c693027d8298c5ab",
-        perfil: Perfil.PADRAO,
-        senha: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
+        profile: Profile.DEFAULT,
+        password: "$2b$10$jlFekbhJdI5oMdiTWWzzbu6d.y9jH03mZuOaRAxGr19jmOo13IkI6"
       }
 
       jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(mockUser)

@@ -2,51 +2,51 @@ import { Injectable } from '@nestjs/common';
 import { CreateCarroDto } from './dto/create-carro.dto';
 import { UpdateCarroDto } from './dto/update-carro.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { FindAlLCarsDto } from './dto/find-all-cars.dto';
+import { FindAllCarsDto } from './dto/find-all-cars.dto';
 
 
 @Injectable()
-export class CarrosService {
+export class CarsService {
   constructor(private readonly prisma: PrismaService) { }
 
 
   async create(createCarroDto: CreateCarroDto) {
-    const carro = await this.prisma.carro.create({
+    const car = await this.prisma.car.create({
       data: {
-        nome: createCarroDto.nome,
+        name: createCarroDto.name,
         userId: createCarroDto.userId
       }
     })
-    return carro;
+    return car;
   }
 
-  async findAll(findAllCarsDto: FindAlLCarsDto) {
-    const carros = await this.prisma.carro.findMany({
+  async findAll(findAllCarsDto: FindAllCarsDto) {
+    const cars = await this.prisma.car.findMany({
       take: findAllCarsDto.limit,
       skip: findAllCarsDto.offset
     })
-    return carros;
+    return cars;
   }
 
   async findOne(id: string) {
-    const carro = await this.prisma.carro.findFirst({
+    const car = await this.prisma.car.findFirst({
       where: { id }
     })
-    return carro;
+    return car;
   }
 
   async update(id: string, updateCarroDto: UpdateCarroDto) {
-    const car = await this.prisma.carro.update({
+    const car = await this.prisma.car.update({
       where: { id },
       data: updateCarroDto
     })
-    return `carro ${car.nome} atualizado`
+    return `car ${car.name} updated`
   }
 
   async remove(id: string) {
-    await this.prisma.carro.delete({
+    await this.prisma.car.delete({
       where: { id }
     })
-    return 'Carro deletado'
+    return 'Car deleted'
   }
 }

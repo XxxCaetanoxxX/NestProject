@@ -17,12 +17,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.name, signInDto.senha);
+    return this.authService.signIn(signInDto.name, signInDto.password);
   }
 
 
   @UseGuards(AuthGuard)
-  @Get('perfil')
+  @Get('profile')
   getProfile(@Request() req: AuthenticatedRequest) {
     return this.userService.findOne(req.user['userId'])
   }

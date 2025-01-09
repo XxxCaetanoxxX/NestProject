@@ -25,13 +25,13 @@ export class AllExceptionFilter implements ExceptionFilter {
 
     // Verificar se é um erro conhecido do Prisma
     else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      status = HttpStatus.BAD_REQUEST; 
+      status = HttpStatus.BAD_REQUEST;
       message = this.mapPrismaError(exception);
     }
     // Verificar se é um erro desconhecido do Prisma
     else if (exception instanceof Prisma.PrismaClientUnknownRequestError) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = { message: 'ERRO DO PRISMA DESCONHECIDO' };
+      message = { message: 'UNKNOW PRISMA ERROR' };
     }
     // Caso seja outro tipo de erro
     else {
@@ -47,9 +47,9 @@ export class AllExceptionFilter implements ExceptionFilter {
   private mapPrismaError(exception: Prisma.PrismaClientKnownRequestError): any {
     switch (exception.code) {
       case 'P2002':
-        return { message: 'Já existente.' };
+        return { message: 'Already existing.' };
       case 'P2003':
-        return{message: 'Sem cadastro'}
+        return { message: 'No registration' }
       case 'P2025':
         return { message: 'Not found.' };
       default:

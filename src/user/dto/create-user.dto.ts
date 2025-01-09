@@ -1,19 +1,19 @@
 import { IsNotEmpty, IsString, MinLength, Matches, IsEnum } from "class-validator";
-import { Perfil } from "@prisma/client";
+import { Profile } from "@prisma/client";
 
-export class CreateUserDto{
-    @IsString({message: "nome deve ser string"})
-    @MinLength(3, {message: "nome deve conter no minimo 3 caracteres"})
-    @IsNotEmpty({message:"nome nao pode ser vazio"})
-    name: string;
+export class CreateUserDto {
+  @IsString({ message: "name cmust be a string" })
+  @MinLength(3, { message: "name must have at least 3 characters" })
+  @IsNotEmpty({ message: "name cant be empaty" })
+  name: string;
 
-    @IsString({message: "senha deve ser string"})
-    @MinLength(4, {message:"senha deve conter no minimo 4 caracteres"})
-    @Matches(/.*\d.*/, { message: "senha deve conter pelo menos um número"}) //estudar essa linha
-    @IsNotEmpty({message:"senha nao pode ser vazio"})
-    senha: string;
+  @IsString({ message: "password must be a string" })
+  @MinLength(4, { message: "password must have at least 4 characters" })
+  @Matches(/.*\d.*/, { message: "password must have at least one special character" }) //estudar essa linha
+  @IsNotEmpty({ message: "password cant be empaty" })
+  password: string;
 
-    @IsNotEmpty({message: "Perfil nao pode ser nulo"})
-    @IsEnum(Perfil, {message: "O perfil deve ser do tipo PADRAO, GERENTE ou ADMIN"})
-    perfil: Perfil;
-  }
+  @IsNotEmpty({ message: "profile cant be empaty" })
+  @IsEnum(Profile, { message: "profile must be DEFAULT, MANAGER or ADMIN" })
+  profile: Profile;
+}

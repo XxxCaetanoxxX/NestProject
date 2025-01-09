@@ -15,7 +15,7 @@ export class UserController {
 
   @Post()
   @UseGuards(RolesGuard)
-  @Roles(Role.GERENTE, Role.ADMIN)
+  @Roles(Role.MANAGER, Role.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -32,14 +32,14 @@ export class UserController {
 
   @Patch(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.GERENTE, Role.ADMIN)
+  @Roles(Role.MANAGER, Role.ADMIN)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @UseGuards(RolesGuard)
-  @Roles(Role.GERENTE, Role.ADMIN)
+  @Roles(Role.MANAGER, Role.ADMIN)
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
