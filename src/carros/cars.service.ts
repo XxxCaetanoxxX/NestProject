@@ -20,7 +20,7 @@ export class CarsService {
     return car;
   }
 
-  async findAll(findAllCarsDto: FindAllCarsDto) {
+  async findAll(findAllCarsDto?: FindAllCarsDto) {
     const cars = await this.prisma.car.findMany({
       take: findAllCarsDto.limit,
       skip: findAllCarsDto.offset

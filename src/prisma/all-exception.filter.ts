@@ -30,8 +30,9 @@ export class AllExceptionFilter implements ExceptionFilter {
     }
     // Verificar se é um erro desconhecido do Prisma
     else if (exception instanceof Prisma.PrismaClientUnknownRequestError) {
-      status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = { message: 'UNKNOW PRISMA ERROR' };
+      console.log(exception)
+      // status = HttpStatus.INTERNAL_SERVER_ERROR;
+      // message = { message: 'UNKNOW PRISMA ERROR' };
     }
     // Caso seja outro tipo de erro
     else {

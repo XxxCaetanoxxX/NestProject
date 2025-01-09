@@ -35,7 +35,6 @@ export class UserService {
   }
 
   async findAll(findAllUsersDto?: FindAllUsersDto) {
-
     const users = await this.prisma.user.findMany({
       take: findAllUsersDto.limit,
       skip: findAllUsersDto.offset,

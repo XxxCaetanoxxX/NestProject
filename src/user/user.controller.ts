@@ -8,7 +8,6 @@ import { Role } from 'src/authorization/role.enum';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 
 
-//commit de testes
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
@@ -21,7 +20,7 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() findAllUsersDto: FindAllUsersDto) {
+  findAll(@Query() findAllUsersDto?: FindAllUsersDto) {
     return this.userService.findAll(findAllUsersDto);
   }
 
