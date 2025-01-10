@@ -25,7 +25,7 @@ export class RolesGuard implements CanActivate {
 
         console.log({ requiredRoles, user });
         if (!requiredRoles.some((role) => user.profile === role)) {
-            throw new ForbiddenException('Você não tem permissão para acessar este recurso.');
+            throw new ForbiddenException('You aren\'t authorized to use this resource.');
         }
         return true;
     }

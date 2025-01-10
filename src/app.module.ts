@@ -12,9 +12,11 @@ import { HashingModule } from './hashing/hashing.module';
 @Module({
   imports: [CarsModule, UserModule, AuthModule, PrismaModule, HashingModule],
   controllers: [AppController],
-  providers: [AppService, {
+  providers: [AppService, 
+    {
     provide: APP_GUARD,
     useClass: AuthGuard
-  }],
+  }
+],
 })
 export class AppModule { }

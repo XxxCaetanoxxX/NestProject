@@ -10,7 +10,6 @@ export class AuthService {
     private hashingService: HashingService) { }
 
   async signIn(name: string, password: string): Promise<any> {
-
     const user = await this.userService.findByName(name);
     const isPasswordValid = user && this.hashingService.compare(password, user.password) //se o usuario existir e a comparação das senhas retornar true
 
