@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,41 +8,38 @@ import { HashingService } from 'src/hashing/hashing.service';
 @Injectable()
 export class UserService {
   constructor(
-    private readonly prisma: PrismaService, 
+    private readonly prisma: PrismaService,
     private readonly hashingService: HashingService) { }
 
   async findByName(name: string) {
     const user = await this.prisma.user.findFirst({
       where: { name },
       include: {
-        carros: true,
+        cars: true,
       }
     })
     return user;
   }
 
   async create(createUserDto: CreateUserDto) {
-    const senhaCriptografada = await this.hashingService.hash(createUserDto.senha)
+    const hashedPassword = await this.hashingService.hash(createUserDto.password)
 
     const user = await this.prisma.user.create({
       data: {
         name: createUserDto.name,
-        perfil: createUserDto.perfil,
-        senha: senhaCriptografada
+        profile: createUserDto.profile,
+        password: hashedPassword
       }
     })
     return user;
   }
 
-  async findAll(findAllUsersDto? : FindAllUsersDto) {
-
-    const {limit = 10, offset =0} = findAllUsersDto // caso não receba um dto, esse sera o valor padrao
-
+  async findAll(findAllUsersDto?: FindAllUsersDto) {
     const users = await this.prisma.user.findMany({
-      take: limit,
-      skip: offset,
+      take: findAllUsersDto.limit,
+      skip: findAllUsersDto.offset,
       include: {
-        carros: true,
+        cars: true,
       }
     });
     return users;
@@ -52,7 +49,7 @@ export class UserService {
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: {
-        carros: true,
+        cars: true,
       }
     })
     return user;
@@ -62,22 +59,22 @@ export class UserService {
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: {
-        carros: true,
+        cars: true,
       }
     })
 
     if (!user) {
-      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const senhaCriptografada = await  this.hashingService.hash(updateUserDto.senha);
+    const hashedPassword = await this.hashingService.hash(updateUserDto.password);
 
-    const updatedUser=await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id },
       data: {
         name: updateUserDto.name,
-        perfil: updateUserDto.perfil,
-        senha: senhaCriptografada
+        profile: updateUserDto.profile,
+        password: hashedPassword
       }
 
     })
@@ -93,6 +90,6 @@ export class UserService {
       where: { id }
     })
 
-    return `Usuário ${user.name} foi excluido`;
+    return `User ${user.name} was deleted`;
   }
 }

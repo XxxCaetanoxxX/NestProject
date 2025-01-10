@@ -7,23 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Perfil {
-  PADRAO
-  GERENTE
+enum Profile {
+  DEFAULT
+  MANAGER
   ADMIN
 }
 
 model User {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  perfil Perfil
-  senha  String
-  carros Carro[]
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  profile  Profile
+  password String
+  cars     Car[]
 }
 
-model Carro {
+model Car {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  nome   String
+  name   String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @db.ObjectId
 }

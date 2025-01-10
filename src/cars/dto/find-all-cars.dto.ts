@@ -1,10 +1,10 @@
 import { Type } from "class-transformer";
 import { IsInt, IsOptional, Max, Min } from "class-validator";
 
-export class FindAllUsersDto {
+export class FindAllCarsDto {
     @IsOptional()
     @IsInt()
-    @Type(() => Number) //tenta voncerter string para numero
+    @Type(() => Number) //tenta converter string para numero
     @Min(5)
     @Max(50)
     limit: number = 10;

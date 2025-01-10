@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
     if (isPublic) {
-      // 💡 See this condition
       return true;
     }
     const request: AuthenticatedRequest = context.switchToHttp().getRequest();
@@ -35,7 +34,6 @@ export class AuthGuard implements CanActivate {
           secret: process.env.JWT_SECRETY
         }
       );
-      console.log(decoded["perfil"])
       request.user = decoded;
     } catch {
       throw new UnauthorizedException();

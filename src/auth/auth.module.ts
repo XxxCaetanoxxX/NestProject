@@ -4,17 +4,16 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
-import { APP_GUARD } from '@nestjs/core';
 import { HashingModule } from 'src/hashing/hashing.module';
 
 @Module({
-  imports:[HashingModule,UserModule, JwtModule.register({
+  imports: [HashingModule, UserModule, JwtModule.register({
     global: true,
     secret: process.env.JWT_SECRETY,
-    signOptions: {expiresIn: '2h'}
+    signOptions: { expiresIn: '2h' }
   })],
   controllers: [AuthController],
-  providers: [AuthService, AuthGuard], 
+  providers: [AuthService, AuthGuard],
   exports: [AuthService, JwtModule]
 })
-export class AuthModule {}
+export class AuthModule { }
