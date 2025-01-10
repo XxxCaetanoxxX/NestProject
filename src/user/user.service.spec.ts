@@ -166,7 +166,7 @@ describe('UserService', () => {
 
     })
 
-    it.only('deve lançar um erro quando usuario nao for encontrado', async()=>{
+    it('deve lançar um erro quando usuario nao for encontrado', async()=>{
       const updateUserDto : UpdateUserDto ={name:'Gilson'};
 
       jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null)
