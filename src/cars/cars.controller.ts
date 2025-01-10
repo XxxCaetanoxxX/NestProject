@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarroDto } from './dto/create-carro.dto';
-import { UpdateCarroDto } from './dto/update-carro.dto';
+import { UpdateCarroDto } from './dto/update-car.dto';
 import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';

@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCarroDto } from './dto/create-carro.dto';
-import { UpdateCarroDto } from './dto/update-carro.dto';
+import { UpdateCarroDto } from './dto/update-car.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
+import { ResponseCarDto } from './dto/response-car.dto';
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class CarsService {
     return car;
   }
 
-  async findAll(findAllCarsDto?: FindAllCarsDto) {
+  async findAll(findAllCarsDto?: FindAllCarsDto) : Promise<ResponseCarDto[]>{
     const cars = await this.prisma.car.findMany({
       take: findAllCarsDto.limit,
       skip: findAllCarsDto.offset
@@ -28,7 +29,7 @@ export class CarsService {
     return cars;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string) : Promise<ResponseCarDto>{
     const car = await this.prisma.car.findFirst({
       where: { id }
     })
