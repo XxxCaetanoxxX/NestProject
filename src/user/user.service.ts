@@ -90,6 +90,8 @@ export class UserService {
       where: { id }
     })
 
-    return `User ${user.name} was deleted`;
+    return {
+      message: 'User deleted successfully',
+    };
   }
 }
