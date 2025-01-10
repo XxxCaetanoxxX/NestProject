@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCarroDto } from './dto/create-carro.dto';
-import { UpdateCarroDto } from './dto/update-car.dto';
+import { CreateCarDto } from './dto/create-car.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
 
@@ -9,11 +9,11 @@ export class CarsService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async create(createCarroDto: CreateCarroDto){
+  async create(createCarDto: CreateCarDto){
     const car = await this.prisma.car.create({
       data: {
-        name: createCarroDto.name,
-        userId: createCarroDto.userId
+        name: createCarDto.name,
+        userId: createCarDto.userId
       }
     })
     return car;
@@ -34,10 +34,10 @@ export class CarsService {
     return car;
   }
 
-  async update(id: string, updateCarroDto: UpdateCarroDto){
+  async update(id: string, updateCarDto: UpdateCarDto){
     const car = await this.prisma.car.update({
       where: { id },
-      data: updateCarroDto
+      data: updateCarDto
     })
     return car
   }

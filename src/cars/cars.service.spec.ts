@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CarsService } from './cars.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCarroDto } from './dto/create-carro.dto';
+import { CreateCarDto } from './dto/create-car.dto';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
 
 
-describe('CarrosService', () => {
+describe('CarsService', () => {
   let service: CarsService;
   let prisma: PrismaService;
-  let car: CreateCarroDto;
+  let car: CreateCarDto;
   let insertedCar: any;
   const findAllCarsFto: FindAllCarsDto = {
     limit: 10,

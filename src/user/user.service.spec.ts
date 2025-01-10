@@ -131,7 +131,7 @@ describe('UserService', () => {
       expect(prismaService.user.findFirst).toHaveBeenCalledWith({
         where: { id: mockUser.id },
         include: {
-          carros: true,
+          cars: true,
         }
       })
 
