@@ -36,6 +36,12 @@ export class UserService {
 
   async findAll(findAllUsersDto?: FindAllUsersDto) {
     const users = await this.prisma.user.findMany({
+
+      where: findAllUsersDto?.name ? {
+        name: findAllUsersDto.name
+      } : {},
+      //caso findalldto tenha um nome, busque pelos nome, caso contrario retorne todos do banco
+
       take: findAllUsersDto.limit,
       skip: findAllUsersDto.offset,
       include: {

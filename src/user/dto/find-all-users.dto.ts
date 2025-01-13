@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsInt, IsOptional, Max, Min } from "class-validator";
+import { IsInt, IsOptional, IsString, Max, Min, MinLength } from "class-validator";
 
 export class FindAllUsersDto {
     @ApiPropertyOptional()
@@ -17,4 +17,13 @@ export class FindAllUsersDto {
     @Type(() => Number)
     @Min(0)
     offset: number = 0;
+
+    @ApiPropertyOptional({
+        description: 'Filter by name, min 3 characters',
+        minLength: 3,
+      })
+    @IsOptional()
+    @IsString()
+    @MinLength(3, { message: 'Name must be at least 3 characters long' })
+    name?: string;
 }
