@@ -1,9 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsInt, IsOptional, Max, Min } from "class-validator";
 
 export class FindAllCarsDto {
-    @ApiProperty()
+    @ApiPropertyOptional()
     @IsOptional()
     @IsInt()
     @Type(() => Number) //tenta converter string para numero
@@ -11,7 +11,7 @@ export class FindAllCarsDto {
     @Max(50)
     limit: number = 10;
 
-    @ApiProperty()
+    @ApiPropertyOptional()
     @IsOptional()
     @IsInt()
     @Type(() => Number)

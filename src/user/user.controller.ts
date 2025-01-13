@@ -6,7 +6,7 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
-import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { ResponseUserDto } from './dto/response-user.dto'
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
 

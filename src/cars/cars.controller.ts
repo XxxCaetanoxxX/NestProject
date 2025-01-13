@@ -6,7 +6,7 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
-import { ApiBearerAuth, ApiBody, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
 
