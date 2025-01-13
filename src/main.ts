@@ -20,6 +20,7 @@ async function bootstrap() {
   .setTitle('Api estacionamento')
   .setDescription('Api para gerenciamento de estacionamento, treinamento com nest')
   .setVersion('1.0')
+  .addBearerAuth()
   .build();
 
   const documentFactoty = () => SwaggerModule.createDocument(app, configSwagger)
