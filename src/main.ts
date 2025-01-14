@@ -17,14 +17,14 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionFilter());
 
   const configSwagger = new DocumentBuilder()
-  .setTitle('Api estacionamento')
-  .setDescription('Api para gerenciamento de estacionamento, treinamento com nest')
-  .setVersion('1.0')
-  .addBearerAuth()
-  .build();
+    .setTitle('Api estacionamento')
+    .setDescription('Api para gerenciamento de estacionamento, treinamento com nest')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
 
   const documentFactoty = () => SwaggerModule.createDocument(app, configSwagger)
-  SwaggerModule.setup('/',app, documentFactoty);
+  SwaggerModule.setup('/', app, documentFactoty);
 
   await app.listen(process.env.PORT ?? 3000);
 }

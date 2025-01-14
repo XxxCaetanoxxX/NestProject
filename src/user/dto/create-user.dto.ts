@@ -17,7 +17,7 @@ export class CreateUserDto {
   @IsNotEmpty({ message: "password cant be empaty" })
   password: string;
 
-  @ApiProperty({enum: Profile})
+  @ApiProperty({ enum: Profile })
   @IsNotEmpty({ message: "profile cant be empaty" })
   @IsEnum(Profile, { message: "profile must be DEFAULT, MANAGER or ADMIN" })
   profile: Profile;

@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 @Catch()
@@ -30,9 +30,8 @@ export class AllExceptionFilter implements ExceptionFilter {
     }
     // Verificar se é um erro desconhecido do Prisma
     else if (exception instanceof Prisma.PrismaClientUnknownRequestError) {
-      console.log(exception)
-      // status = HttpStatus.INTERNAL_SERVER_ERROR;
-      // message = { message: 'UNKNOW PRISMA ERROR' };
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = { message: 'UNKNOW PRISMA ERROR' };
     }
     // Caso seja outro tipo de erro
     else {
@@ -52,7 +51,7 @@ export class AllExceptionFilter implements ExceptionFilter {
       case 'P2003':
         return { message: 'No registration' }
       case 'P2025':
-        return { message: 'Not found.' };
+        return { message: 'Not Found' };
       default:
         return { message: 'A database error occurred.' };
     }

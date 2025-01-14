@@ -21,7 +21,7 @@ export class AuthService {
     const token = jwt.sign(
       { userId: user.id, profile: user.profile },
       process.env.JWT_SECRETY,
-      { expiresIn: '2h' }
+      { expiresIn: '24h' }
     );
 
     return { token }; // Retorna o token

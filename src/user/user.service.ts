@@ -1,9 +1,10 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { HashingService } from 'src/hashing/hashing.service';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -14,14 +15,11 @@ export class UserService {
   async findByName(name: string) {
     const user = await this.prisma.user.findFirst({
       where: { name },
-      select: {
-        id: true,
-        name: true,
-        profile: true,
+      include: {
         cars: true
       }
     })
-    return user;
+    return user
   }
 
   async create(createUserDto: CreateUserDto) {
@@ -59,6 +57,11 @@ export class UserService {
         cars: true
       }
     });
+
+    if (users.length === 0) {
+      throw new NotFoundException()
+    }
+
     return users;
   }
 
@@ -72,6 +75,11 @@ export class UserService {
         cars: true
       }
     })
+
+    if (!user) {
+      throw new NotFoundException()
+    }
+
     return user;
   }
 
@@ -101,7 +109,7 @@ export class UserService {
       }
 
     })
-    return updateUserDto;
+    return updatedUser;
   }
 
   async remove(id: string) {
