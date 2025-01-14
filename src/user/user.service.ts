@@ -14,8 +14,11 @@ export class UserService {
   async findByName(name: string) {
     const user = await this.prisma.user.findFirst({
       where: { name },
-      include: {
-        cars: true,
+      select: {
+        id: true,
+        name: true,
+        profile: true,
+        cars: true
       }
     })
     return user;
@@ -29,6 +32,11 @@ export class UserService {
         name: createUserDto.name,
         profile: createUserDto.profile,
         password: hashedPassword
+      },
+      select: {
+        id: true,
+        name: true,
+        profile: true,
       }
     })
     return user;
@@ -44,8 +52,11 @@ export class UserService {
 
       take: findAllUsersDto.limit,
       skip: findAllUsersDto.offset,
-      include: {
-        cars: true,
+      select: {
+        id: true,
+        name: true,
+        profile: true,
+        cars: true
       }
     });
     return users;
@@ -54,8 +65,11 @@ export class UserService {
   async findOne(id: string) {
     const user = await this.prisma.user.findFirst({
       where: { id },
-      include: {
-        cars: true,
+      select: {
+        id: true,
+        name: true,
+        profile: true,
+        cars: true
       }
     })
     return user;
@@ -64,8 +78,11 @@ export class UserService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.findFirst({
       where: { id },
-      include: {
-        cars: true,
+      select: {
+        id: true,
+        name: true,
+        profile: true,
+        cars: true
       }
     })
 
@@ -84,11 +101,11 @@ export class UserService {
       }
 
     })
-    return updatedUser;
+    return updateUserDto;
   }
 
   async remove(id: string) {
-    const user = await this.prisma.user.findFirst({
+    await this.prisma.user.findFirst({
       where: { id }
     })
 

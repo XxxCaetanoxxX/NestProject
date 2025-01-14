@@ -18,12 +18,12 @@ model User {
   name     String
   profile  Profile
   password String
-  cars   Car[]
+  cars     Car[]
 }
 
 model Car {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
+  name   String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @db.ObjectId
 }
