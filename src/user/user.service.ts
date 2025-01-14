@@ -86,31 +86,32 @@ export class UserService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.findFirst({
       where: { id },
-      select: {
-        id: true,
-        name: true,
-        profile: true,
-        cars: true
-      }
-    })
+      include: { cars: true }
+    });
 
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const hashedPassword = await this.hashingService.hash(updateUserDto.password);
+    let hashedPassword = user.password;
+
+    // Caso haja uma senha válida no DTO, atualize a senha
+    if (updateUserDto.password && updateUserDto.password !== "") {
+      hashedPassword = await this.hashingService.hash(updateUserDto.password);
+    }
 
     const updatedUser = await this.prisma.user.update({
       where: { id },
       data: {
         name: updateUserDto.name,
         profile: updateUserDto.profile,
-        password: hashedPassword
-      }
+        password: hashedPassword,
+      },
+    });
 
-    })
     return updatedUser;
   }
+
 
   async remove(id: string) {
     await this.prisma.user.findFirst({
