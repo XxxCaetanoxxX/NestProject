@@ -9,12 +9,12 @@ export class FindAllCarsDto {
     @Type(() => Number) //tenta converter string para numero
     @Min(5)
     @Max(50)
-    limit: number = 10;
+    limit?: number = 10;
 
     @ApiPropertyOptional()
     @IsOptional()
     @IsInt()
     @Type(() => Number)
     @Min(0)
-    offset: number = 0;
+    offset?: number = 0;
 }

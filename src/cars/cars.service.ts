@@ -9,7 +9,7 @@ export class CarsService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async create(createCarDto: CreateCarDto){
+  async create(createCarDto: CreateCarDto) {
     const car = await this.prisma.car.create({
       data: {
         name: createCarDto.name,
@@ -19,22 +19,22 @@ export class CarsService {
     return car;
   }
 
-  async findAll(findAllCarsDto?: FindAllCarsDto){
+  async findAll(findAllCarsDto?: FindAllCarsDto) {
     const cars = await this.prisma.car.findMany({
-      take: findAllCarsDto.limit,
-      skip: findAllCarsDto.offset
+      take: findAllCarsDto?.limit,
+      skip: findAllCarsDto?.offset
     })
     return cars;
   }
 
-  async findOne(id: string){
+  async findOne(id: string) {
     const car = await this.prisma.car.findFirst({
       where: { id }
     })
     return car;
   }
 
-  async update(id: string, updateCarDto: UpdateCarDto){
+  async update(id: string, updateCarDto: UpdateCarDto) {
     const car = await this.prisma.car.update({
       where: { id },
       data: updateCarDto

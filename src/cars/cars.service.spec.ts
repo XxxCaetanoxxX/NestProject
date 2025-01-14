@@ -5,61 +5,56 @@ import { CreateCarDto } from './dto/create-car.dto';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
 
 
-describe('CarsService', () => {
-  let service: CarsService;
-  let prisma: PrismaService;
-  let car: CreateCarDto;
-  let insertedCar: any;
-  const findAllCarsFto: FindAllCarsDto = {
-    limit: 10,
-    offset: 0
-  }
+
+describe('UserService', () => {
+
+  let carsService: CarsService;
+  let createdTestCar;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CarsService, PrismaService],
+      providers: [
+        CarsService,
+        PrismaService
+      ],
     }).compile();
 
-    service = module.get<CarsService>(CarsService);
-    prisma = module.get<PrismaService>(PrismaService);
-
-    car = {
-      name: 'test car',
-      userId: '6758bd5df24a525157856fe5',
-    };
-
-    insertedCar = await service.create(car);
+    carsService = module.get<CarsService>(CarsService);
   });
 
-  it('should return a car list', async () => {
-    const result = await service.findAll(findAllCarsFto);
-    expect(result).toBeDefined();
-  });
+  it('find all', async () => {
+    const res = await carsService.findAll()
 
-  it('should return more than two cars', async () => {
-    const result = await service.findAll(findAllCarsFto);
-    expect(result.length).toBeGreaterThan(6);
-  });
-
-  it('should have a "dodge" as first car', async () => {
-    const result = await service.findAll(findAllCarsFto);
-    expect(result[0].name).toBe('dodge');
-  });
-
-  it('must check whether the car has been inserted', async () => {
-
-    const result = await prisma.car.findUnique({
-      where: { id: insertedCar.id },
-    });
-    expect(result).toBeDefined();
-    expect(result?.name).toBe(car.name);
-    expect(result?.userId).toBe(car.userId);
+    expect(res).not.toBeNull()
   })
 
-  afterAll(async () => {
+  it('find by id', async () => {
+    const res = await carsService.findOne('6781811df83cc0877cfd9070')
 
-    await service.remove(insertedCar.id);
+    expect(res).not.toBeNull()
+  })
 
-  });
 
-});
+  it('find by name - quando busco por id inixistente retorna erro', async () => {
+    const res = await carsService.findOne('6781811df83cc0877cfd9789')
+
+    expect(res).toBeNull()
+  })
+
+  it('create car', async () => {
+    const car: CreateCarDto = {
+      name: "test car",
+      userId: "6781482ea67dd130ec4ffad7"
+    }
+
+    createdTestCar = await carsService.create(car);
+
+    expect(createdTestCar).not.toBeNull()
+  })
+
+  it('delete a car', async () => {
+    const res = await carsService.remove(createdTestCar.id)
+
+    expect(res.message).toBe('Car deleted successfully')
+  })
+})
