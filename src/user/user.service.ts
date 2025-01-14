@@ -40,16 +40,17 @@ export class UserService {
     return user;
   }
 
-  async findAll(findAllUsersDto?: FindAllUsersDto) {
-    const users = await this.prisma.user.findMany({
+  findAll({ limit, offset, ...dto }: FindAllUsersDto) {
+    return this.prisma.user.findMany({
 
-      where: findAllUsersDto?.name ? {
-        name: findAllUsersDto.name
-      } : {},
-      //caso findalldto tenha um nome, busque pelos nome, caso contrario retorne todos do banco
-
-      take: findAllUsersDto.limit,
-      skip: findAllUsersDto.offset,
+      where: {
+        ...dto,
+        name: {
+          contains: dto.name
+        },
+      },
+      take: limit,
+      skip: offset,
       select: {
         id: true,
         name: true,
@@ -57,12 +58,6 @@ export class UserService {
         cars: true
       }
     });
-
-    if (users.length === 0) {
-      throw new NotFoundException()
-    }
-
-    return users;
   }
 
   async findOne(id: string) {
@@ -107,11 +102,16 @@ export class UserService {
         profile: updateUserDto.profile,
         password: hashedPassword,
       },
+      select: {
+        id: true,
+        name: true,
+        cars: true,
+        profile: true
+      }
     });
 
     return updatedUser;
   }
-
 
   async remove(id: string) {
     await this.prisma.user.findFirst({

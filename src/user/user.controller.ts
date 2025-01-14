@@ -13,7 +13,7 @@ import { FindOneUserDto } from './dto/find-one-user.dto';
 
 
 @ApiBearerAuth()
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 

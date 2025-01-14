@@ -28,12 +28,12 @@ export class AuthController {
   }
 
 
-  @UseGuards(AuthGuard)
   @ApiOkResponse({
     description: 'Returns logged user',
     type: ResponseUserDto,
   })
   @Get('profile')
+  @UseGuards(AuthGuard)
   getProfile(@Request() req: AuthenticatedRequest) {
     return this.userService.findOne(req.user['userId'])
   }

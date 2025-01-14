@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsInt, IsOptional, IsString, Max, Min, MinLength } from "class-validator";
+import { IsEnum, IsInt, IsOptional, IsString, Max, Min, MinLength } from "class-validator";
+import { Profile } from "@prisma/client";
 
 export class FindAllUsersDto {
   @ApiPropertyOptional()
@@ -26,4 +27,12 @@ export class FindAllUsersDto {
   @IsString()
   @MinLength(3, { message: 'Name must be at least 3 characters long' })
   name?: string;
+
+
+  @ApiPropertyOptional({
+    enum: Profile
+  })
+  @IsOptional()
+  @IsEnum(Profile)
+  profile: Profile
 }
