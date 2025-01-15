@@ -6,7 +6,7 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
 
@@ -36,23 +36,25 @@ export class CarsController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({
     description: 'Returns the details of a car.',
     type: ResponseCarDto,
   })
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.carsService.findOne(id);
   }
 
   //como passo o api property se ele extends a create?
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({
     description: 'Returns the details of a updated car.',
     type: ResponseCarDto,
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  update(@Param('id') id: number, @Body() updateCarDto: UpdateCarDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateCarDto: UpdateCarDto) {
     return this.carsService.update(id, updateCarDto);
   }
 
@@ -61,6 +63,7 @@ export class CarsController {
     description: 'Delete a car',
     type: ResponseDeleteCarDto,
   })
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
   remove(@Param('id', ParseIntPipe) id: number) {

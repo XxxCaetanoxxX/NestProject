@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,7 +6,7 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
-import { ApiBearerAuth, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ResponseUserDto } from './dto/response-user.dto'
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
 import { FindOneUserDto } from './dto/find-one-user.dto';
@@ -42,8 +42,10 @@ export class UserController {
     description: 'Returns one user',
     type: ResponseUserDto,
   })
-  findOne(@Param() params: FindOneUserDto) {
-    return this.userService.findOne(params.id);
+  @ApiParam({ name: 'id', type: Number })
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log(typeof id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
@@ -53,7 +55,8 @@ export class UserController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  update(@Param() params: FindOneUserDto, @Body() updateUserDto: UpdateUserDto) {
+  @ApiParam({ name: 'id', type: Number })
+  update(@Param('id', ParseIntPipe) params: FindOneUserDto, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(params.id, updateUserDto);
   }
 
@@ -63,9 +66,10 @@ export class UserController {
     description: 'Delete a user',
     type: ResponseDeleteUserDto,
   })
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  remove(@Param() params: FindOneUserDto) {
+  remove(@Param('id', ParseIntPipe) params: FindOneUserDto) {
     return this.userService.remove(params.id);
   }
 }
