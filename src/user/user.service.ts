@@ -12,6 +12,15 @@ export class UserService {
     private readonly prisma: PrismaService,
     private readonly hashingService: HashingService) { }
 
+  async findByName(name: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { name },
+      include: {
+        cars: true
+      }
+    })
+    return user
+  }
 
   async create(createUserDto: CreateUserDto) {
     const hashedPassword = await this.hashingService.hash(createUserDto.password)

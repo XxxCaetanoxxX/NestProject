@@ -10,8 +10,7 @@ export class AuthService {
     private hashingService: HashingService) { }
 
   async signIn(name: string, password: string): Promise<any> {
-    const user = await this.userService.findAll({ name: name })[0];
-    console.log(user);
+    const user = await this.userService.findByName(name);
     const isPasswordValid = user && this.hashingService.compare(password, user.password) //se o usuario existir e a comparação das senhas retornar true
 
     if (!user || !isPasswordValid) {
@@ -25,7 +24,7 @@ export class AuthService {
       { expiresIn: '24h' }
     );
 
-    return token; // Retorna o token
+    return { token }; // Retorna o token
 
   }
 }
