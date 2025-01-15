@@ -8,6 +8,7 @@ import { UserService } from 'src/user/user.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { ResponseUserDto } from 'src/user/dto/response-user.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { FindAllUsersDto } from 'src/user/dto/find-all-users.dto';
 
 
 @Controller('auth')

@@ -6,13 +6,14 @@ import { HashingService } from 'src/hashing/hashing.service';
 import { Profile } from '@prisma/client';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { randomInt } from 'crypto';
 
 
 
 describe('UserService', () => {
 
-  let userService: UserService;
-  let createdTestUser;
+  let service: UserService;
+  let id: string;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,46 +24,64 @@ describe('UserService', () => {
       ],
     }).compile();
 
-    userService = module.get<UserService>(UserService);
-  });
+    service = module.get<UserService>(UserService);
 
-  it('find all', async () => {
-    const res = await userService.findAll({ name: 'bruna', profile: 'MANAGER' })
-
-    expect(res).not.toBeNull()
-  })
-
-  it('find by name', async () => {
-    const res = await userService.findByName('Paulo')
-
-    expect(res).toBeNull()
-  })
-
-
-  it('find by name - quando busco por lucas retorna erro', async () => {
-    const res = await userService.findAll({
-      name: 'Lucas'
-    })
-
-    expect(res.length).not.toBeGreaterThan(1)
-  })
-
-  it('create car', async () => {
     const user: CreateUserDto = {
       name: "teste user",
       password: "dpmg123",
       profile: Profile.DEFAULT
     }
 
-    createdTestUser = await userService.create(user);
+    const res = await service.create(user);
+    id = res.id;
+    delete user.password;
+    expect(res).toMatchObject(user);
 
-    expect(createdTestUser).not.toBeNull()
+  });
+
+  afterAll(async () => {
+    await service.remove(id);
   })
 
-  it('delete a user', async () => {
-    const res = await userService.remove(createdTestUser.id)
 
-    expect(res.message).toBe('User deleted successfully')
+  it('find all', async () => {
+    const res = await service.findAll({})
+    expect(Object.keys(res[0])).toEqual(['id', 'name', 'profile', 'cars'])
+
+    expect(res).not.toBeNull()
+  })
+
+  it('findOne', async () => {
+    const res = await service.findOne(id)
+
+    const properties = ['id', 'name', 'profile', 'cars'];
+
+    for (const property of properties) {
+      expect(res).toHaveProperty(property);
+    }
+
+    expect(res).not.toHaveProperty('password');
+  });
+
+  it('find by name - quando busco por lucas retorna erro', async () => {
+    const res = await service.findAll({
+      name: 'Lucas'
+    })
+
+    expect(res.length).not.toBeGreaterThan(1)
+  })
+
+  it('update', async () => {
+
+    const name = `Paula ${randomInt(10)}`
+
+    const res = await service.update(id, {
+      name
+    });
+
+    expect(res).toMatchObject({
+      name
+    })
   })
 })
 

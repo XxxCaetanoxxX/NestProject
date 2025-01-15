@@ -12,15 +12,6 @@ export class UserService {
     private readonly prisma: PrismaService,
     private readonly hashingService: HashingService) { }
 
-  async findByName(name: string) {
-    const user = await this.prisma.user.findFirst({
-      where: { name },
-      include: {
-        cars: true
-      }
-    })
-    return user
-  }
 
   async create(createUserDto: CreateUserDto) {
     const hashedPassword = await this.hashingService.hash(createUserDto.password)
@@ -62,7 +53,7 @@ export class UserService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     const user = await this.prisma.user.findFirst({
       where: { id },
       select: {
@@ -80,7 +71,7 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: { cars: true }
@@ -115,17 +106,10 @@ export class UserService {
     return updatedUser;
   }
 
-  async remove(id: string) {
-    await this.prisma.user.findFirst({
+  remove(id: number) {
+
+    return this.prisma.user.delete({
       where: { id }
     })
-
-    await this.prisma.user.delete({
-      where: { id }
-    })
-
-    return {
-      message: 'User deleted successfully',
-    };
   }
 }

@@ -1,53 +1,75 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { HashingService } from 'src/hashing/hashing.service';
+import { Profile } from '@prisma/client';
+import { randomInt } from 'crypto';
 import { CarsService } from './cars.service';
-import { PrismaService } from '../prisma/prisma.service';
 import { CreateCarDto } from './dto/create-car.dto';
-import { FindAllCarsDto } from './dto/find-all-cars.dto';
 
 
 
-describe('UserService', () => {
+describe('CarService', () => {
 
-  let carsService: CarsService;
-  let createdTestCar;
+  let service: CarsService;
+  let id: number;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CarsService,
+
         PrismaService
       ],
     }).compile();
 
-    carsService = module.get<CarsService>(CarsService);
+    service = module.get<CarsService>(CarsService);
+
+    const payload: CreateCarDto = {
+      name: 'hb20',
+      isStocked: false,
+      userId: 1
+    }
+
+    const res = await service.create(payload);
+    id = res.id
+    expect(res).toMatchObject(payload);
+
   });
 
+  afterAll(async () => {
+    await service.remove(id);
+  })
+
+
   it('find all', async () => {
-    const res = await carsService.findAll()
+    const res = await service.findAll({})
+    expect(Object.keys(res[0])).toEqual(['id', 'name', 'userId', 'isStocked'])
 
     expect(res).not.toBeNull()
   })
 
-  it('find by id', async () => {
-    const res = await carsService.findOne('6781811df83cc0877cfd9070')
+  it('findOne', async () => {
+    const res = await service.findOne(id)
 
-    expect(res).toBeNull()
-  })
+    const properties = ['id', 'name'];
 
-  it('create car', async () => {
-    const car: CreateCarDto = {
-      name: "test car",
-      userId: "6781482ea67dd130ec4ffad7"
+    for (const property of properties) {
+      expect(res).toHaveProperty(property);
     }
+  });
 
-    createdTestCar = await carsService.create(car);
 
-    expect(createdTestCar).not.toBeNull()
-  })
+  it('update', async () => {
 
-  it('delete a car', async () => {
-    const res = await carsService.remove(createdTestCar.id)
+    const name = `h${randomInt(50)}`
 
-    expect(res.message).toBe('Car deleted successfully')
+    const res = await service.update(id, {
+      name
+    });
+
+    expect(res).toMatchObject({
+      name
+    })
   })
 })
+

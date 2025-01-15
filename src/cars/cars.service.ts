@@ -9,14 +9,10 @@ export class CarsService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async create(createCarDto: CreateCarDto) {
-    const car = await this.prisma.car.create({
-      data: {
-        name: createCarDto.name,
-        userId: createCarDto.userId
-      }
-    })
-    return car;
+  create(createCarDto: CreateCarDto) {
+    return this.prisma.car.create({
+      data: createCarDto
+    });
   }
 
   async findAll(findAllCarsDto?: FindAllCarsDto) {
@@ -27,14 +23,14 @@ export class CarsService {
     return cars;
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     const car = await this.prisma.car.findFirst({
       where: { id }
     })
     return car;
   }
 
-  async update(id: string, updateCarDto: UpdateCarDto) {
+  async update(id: number, updateCarDto: UpdateCarDto) {
     const car = await this.prisma.car.update({
       where: { id },
       data: updateCarDto
@@ -42,12 +38,9 @@ export class CarsService {
     return car
   }
 
-  async remove(id: string) {
-    await this.prisma.car.delete({
+  remove(id: number) {
+    return this.prisma.car.delete({
       where: { id }
     })
-    return {
-      message: 'Car deleted successfully',
-    };
   }
 }

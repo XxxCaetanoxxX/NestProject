@@ -11,9 +11,9 @@ import { HashingModule } from './hashing/hashing.module';
   imports: [CarsModule, UserModule, AuthModule, PrismaModule, HashingModule],
   providers: [
     {
-    provide: APP_GUARD,
-    useClass: AuthGuard
-  }
-],
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    }
+  ],
 })
 export class AppModule { }

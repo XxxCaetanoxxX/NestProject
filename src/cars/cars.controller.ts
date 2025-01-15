@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CarsService } from './cars.service';
-import { CreateCarDto} from './dto/create-car.dto';
+import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
@@ -40,7 +40,7 @@ export class CarsController {
     description: 'Returns the details of a car.',
     type: ResponseCarDto,
   })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.carsService.findOne(id);
   }
 
@@ -52,7 +52,7 @@ export class CarsController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  update(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
+  update(@Param('id') id: number, @Body() updateCarDto: UpdateCarDto) {
     return this.carsService.update(id, updateCarDto);
   }
 
@@ -63,7 +63,7 @@ export class CarsController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.carsService.remove(id);
   }
 }
