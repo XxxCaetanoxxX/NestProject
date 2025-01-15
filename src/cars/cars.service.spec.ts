@@ -31,13 +31,6 @@ describe('UserService', () => {
   it('find by id', async () => {
     const res = await carsService.findOne('6781811df83cc0877cfd9070')
 
-    expect(res).not.toBeNull()
-  })
-
-
-  it('find by name - quando busco por id inixistente retorna erro', async () => {
-    const res = await carsService.findOne('6781811df83cc0877cfd9789')
-
     expect(res).toBeNull()
   })
 

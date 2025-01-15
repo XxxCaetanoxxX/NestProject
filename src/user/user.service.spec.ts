@@ -27,7 +27,7 @@ describe('UserService', () => {
   });
 
   it('find all', async () => {
-    const res = await userService.findAll({ name: 'bruna' })
+    const res = await userService.findAll({ name: 'bruna', profile: 'MANAGER' })
 
     expect(res).not.toBeNull()
   })
@@ -41,7 +41,7 @@ describe('UserService', () => {
 
   it('find by name - quando busco por lucas retorna erro', async () => {
     const res = await userService.findAll({
-      name: 'lucas',
+      name: 'Lucas'
     })
 
     expect(res.length).not.toBeGreaterThan(1)

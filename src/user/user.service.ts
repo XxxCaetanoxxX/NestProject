@@ -45,6 +45,8 @@ export class UserService {
 
       where: {
         ...dto,
+        //filtra por todos os atributos, exceto limit e offset que ja foram retirados
+        //e pelo nome, que esta sendo filtrado abaixo
         name: {
           contains: dto.name
         },

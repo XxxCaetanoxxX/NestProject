@@ -34,5 +34,5 @@ export class FindAllUsersDto {
   })
   @IsOptional()
   @IsEnum(Profile)
-  profile: Profile
+  profile?: Profile
 }
