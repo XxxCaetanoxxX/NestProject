@@ -32,6 +32,7 @@ export class CarsController {
     type: [ResponseCarDto],
   })
   findAll(@Query() findAllCarsDto?: FindAllCarsDto) {
+    console.log(findAllCarsDto.isStocked); //esta retornando sempre true, mesmo ao passar false
     return this.carsService.findAll(findAllCarsDto);
   }
 

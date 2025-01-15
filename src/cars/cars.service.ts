@@ -15,10 +15,17 @@ export class CarsService {
     });
   }
 
-  async findAll(findAllCarsDto?: FindAllCarsDto) {
+  async findAll({ limit, offset, isStocked }: FindAllCarsDto) {
+    console.log(typeof isStocked) //boolean (.)
+
     const cars = await this.prisma.car.findMany({
-      take: findAllCarsDto?.limit,
-      skip: findAllCarsDto?.offset
+
+      where: {
+        isStocked
+      },
+
+      take: limit,
+      skip: offset
     })
     return cars;
   }

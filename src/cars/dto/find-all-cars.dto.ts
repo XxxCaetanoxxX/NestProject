@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsBoolean, IsInt, IsOptional, Max, Min } from "class-validator";
 
 export class FindAllCarsDto {
@@ -24,6 +24,7 @@ export class FindAllCarsDto {
     })
     @IsOptional()
     @IsBoolean()
-    @Type(() => Boolean)
+    // @Type(() => Boolean)
+    @Transform(({ value }) => value === 'true' || value == true)
     isStocked?: boolean
 }

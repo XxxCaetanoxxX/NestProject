@@ -25,7 +25,7 @@ export class FindAllUsersDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(3, { message: 'Name must be at least 3 characters long' })
+  @MinLength(3)
   name?: string;
 
 
