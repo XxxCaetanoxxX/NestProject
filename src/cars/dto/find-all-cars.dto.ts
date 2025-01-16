@@ -30,6 +30,10 @@ export class FindAllCarsDto {
     //caso contrario, retorna false
     isStocked?: boolean
 
+    @ApiPropertyOptional({
+        type: "array",
+        description: 'Indicate the car\'s id',
+    })
     @IsOptional()
     @IsArray()
     @ArrayNotEmpty()

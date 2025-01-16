@@ -46,7 +46,6 @@ export class CarsController {
     return this.carsService.findOne(id);
   }
 
-  //como passo o api property se ele extends a create?
   @Patch(':id')
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({
@@ -57,6 +56,18 @@ export class CarsController {
   @Roles(Role.MANAGER, Role.ADMIN)
   update(@Param('id', ParseIntPipe) id: number, @Body() updateCarDto: UpdateCarDto) {
     return this.carsService.update(id, updateCarDto);
+  }
+
+  @Patch()
+  @ApiParam({ name: 'ids', type: Array })
+  @ApiOkResponse({
+    description: 'update many cars',
+    type: ResponseCarDto,
+  })
+  @UseGuards(RolesGuard)
+  @Roles(Role.MANAGER, Role.ADMIN)
+  updateMany(@Body() updateCarDto: UpdateCarDto) {
+    return this.carsService.updateMany(updateCarDto);
   }
 
   @Delete(':id')

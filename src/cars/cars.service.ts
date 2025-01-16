@@ -44,10 +44,16 @@ export class CarsService {
     return car
   }
 
-  updateMany({ isStocked }: UpdateCarDto) {
+  updateMany({ ...updateCarDto }: UpdateCarDto) {
     return this.prisma.car.updateMany({
-      where: { isStocked },
-      data: updateCarDto
+      where: {
+        id: {
+          in: updateCarDto.ids
+        }
+      },
+      data: {
+        isStocked: updateCarDto.isStocked
+      }
     })
   }
 
