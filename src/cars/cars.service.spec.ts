@@ -69,5 +69,22 @@ describe('CarService', () => {
       name
     })
   })
+
+  it('update many', async () => {
+
+    const ids = [id]
+
+    const res = await service.updateMany({
+      ids,
+      isStocked: true
+    });
+
+    expect(res).toMatchObject({
+      count: 1
+    })
+
+    const car = await service.findOne(id)
+    expect(car.isStocked).toBe(true)
+  });
 })
 
