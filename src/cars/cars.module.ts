@@ -5,6 +5,6 @@ import { CarsController } from './cars.controller';
 @Module({
   controllers: [CarsController],
   providers: [CarsService],
-  exports: [CarsService]
+  exports: [CarsService],
 })
-export class CarsModule { }
+export class CarsModule {}

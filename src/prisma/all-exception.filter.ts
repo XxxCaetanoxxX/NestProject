@@ -1,4 +1,10 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 @Catch()
@@ -49,7 +55,7 @@ export class AllExceptionFilter implements ExceptionFilter {
       case 'P2002':
         return { message: 'Already existing.' };
       case 'P2003':
-        return { message: 'No registration' }
+        return { message: 'No registration' };
       case 'P2025':
         return { message: 'Not Found' };
       default:

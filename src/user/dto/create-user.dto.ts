@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, MinLength, Matches, IsEnum } from "class-validator";
-import { Profile } from "@prisma/client";
-import { ApiProperty } from "@nestjs/swagger";
-
+import { IsNotEmpty, IsEnum } from 'class-validator';
+import { Profile } from '@prisma/client';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty()

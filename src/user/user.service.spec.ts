@@ -1,58 +1,47 @@
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test, TestingModule } from '@nestjs/testing';
 import { HashingService } from 'src/hashing/hashing.service';
 import { Profile } from '@prisma/client';
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { randomInt } from 'crypto';
 
-
-
 describe('UserService', () => {
-
   let service: UserService;
   let id: string;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UserService,
-        HashingService,
-        PrismaService
-      ],
+      providers: [UserService, HashingService, PrismaService],
     }).compile();
 
     service = module.get<UserService>(UserService);
 
     const user: CreateUserDto = {
-      name: "teste user",
-      password: "dpmg123",
-      profile: Profile.DEFAULT
-    }
+      name: 'teste user',
+      password: 'dpmg123',
+      profile: Profile.DEFAULT,
+    };
 
     const res = await service.create(user);
     id = res.id;
     delete user.password;
     expect(res).toMatchObject(user);
-
   });
 
   afterAll(async () => {
     await service.remove(id);
-  })
-
+  });
 
   it('find all', async () => {
-    const res = await service.findAll({})
-    expect(Object.keys(res[0])).toEqual(['id', 'name', 'profile', 'cars'])
+    const res = await service.findAll({});
+    expect(Object.keys(res[0])).toEqual(['id', 'name', 'profile', 'cars']);
 
-    expect(res).not.toBeNull()
-  })
+    expect(res).not.toBeNull();
+  });
 
   it('findOne', async () => {
-    const res = await service.findOne(id)
+    const res = await service.findOne(id);
 
     const properties = ['id', 'name', 'profile', 'cars'];
 
@@ -65,26 +54,24 @@ describe('UserService', () => {
 
   it('find by name - quando busco por lucas retorna erro', async () => {
     const res = await service.findAll({
-      name: 'Lucas'
-    })
+      name: 'Lucas',
+    });
 
-    expect(res.length).not.toBeGreaterThan(1)
-  })
+    expect(res.length).not.toBeGreaterThan(1);
+  });
 
   it('update', async () => {
-
-    const name = `Paula ${randomInt(10)}`
+    const name = `Paula ${randomInt(10)}`;
 
     const res = await service.update(id, {
-      name
+      name,
     });
 
     expect(res).toMatchObject({
-      name
-    })
-  })
-})
-
+      name,
+    });
+  });
+});
 
 //tests with mocks
 // describe('UserService', () => {
@@ -207,7 +194,6 @@ describe('UserService', () => {
 //       const result = await userService.findOne("676d7947c693027d8298c5ab")
 //       console.log(result)
 
-
 //       expect(prismaService.user.findFirst).toHaveBeenCalledWith({
 //         where: { id: mockUser.id },
 //         include: {
@@ -280,7 +266,6 @@ describe('UserService', () => {
 
 //       const result = await userService.remove("676d7947c693027d8298c5ab")
 //       console.log(result)
-
 
 //       expect(prismaService.user.delete).toHaveBeenCalledWith({
 //         where: { id: "676d7947c693027d8298c5ab" }

@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,16 +17,15 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
-import { ApiBearerAuth, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { ResponseUserDto } from './dto/response-user.dto'
+import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import { ResponseUserDto } from './dto/response-user.dto';
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
 import { FindOneUserDto } from './dto/find-one-user.dto';
-
 
 @ApiBearerAuth()
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiOkResponse({
@@ -56,7 +66,10 @@ export class UserController {
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
   @ApiParam({ name: 'id', type: Number })
-  update(@Param('id', ParseIntPipe) params: FindOneUserDto, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id', ParseIntPipe) params: FindOneUserDto,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.update(params.id, updateUserDto);
   }
 

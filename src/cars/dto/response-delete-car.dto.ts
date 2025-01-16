@@ -1,6 +1,6 @@
-import{ ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ResponseDeleteCarDto {
-    @ApiProperty({ description: 'message' })
-    message: string;
-  }
+  @ApiProperty({ description: 'message' })
+  message: string;
+}

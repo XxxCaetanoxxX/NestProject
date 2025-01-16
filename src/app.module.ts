@@ -12,8 +12,8 @@ import { HashingModule } from './hashing/hashing.module';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AuthGuard
-    }
+      useClass: AuthGuard,
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

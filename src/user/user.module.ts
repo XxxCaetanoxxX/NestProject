@@ -5,8 +5,8 @@ import { HashingModule } from 'src/hashing/hashing.module';
 @Module({
   controllers: [UserController],
   providers: [UserService],
-  imports:[HashingModule],
+  imports: [HashingModule],
   //para que ele fique visível fora deste módulo
-  exports: [UserService]
+  exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

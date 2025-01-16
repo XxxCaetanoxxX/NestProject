@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
@@ -6,16 +17,15 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Role } from 'src/authorization/role.enum';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
-import { isArray } from 'class-validator';
 import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 
 @ApiBearerAuth()
 @Controller('cars')
 export class CarsController {
-  constructor(private readonly carsService: CarsService) { }
+  constructor(private readonly carsService: CarsService) {}
 
   @Post()
   @ApiOkResponse({
@@ -55,7 +65,10 @@ export class CarsController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateCarDto: UpdateCarDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCarDto: UpdateCarDto,
+  ) {
     return this.carsService.update(id, updateCarDto);
   }
 
@@ -65,9 +78,9 @@ export class CarsController {
     schema: {
       type: 'object',
       properties: {
-        "count": { type: "number" }
+        count: { type: 'number' },
       },
-    }
+    },
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)

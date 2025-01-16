@@ -7,13 +7,17 @@ import { AuthGuard } from './auth.guard';
 import { HashingModule } from 'src/hashing/hashing.module';
 
 @Module({
-  imports: [HashingModule, UserModule, JwtModule.register({
-    global: true,
-    secret: process.env.JWT_SECRETY,
-    signOptions: { expiresIn: '2h' }
-  })],
+  imports: [
+    HashingModule,
+    UserModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRETY,
+      signOptions: { expiresIn: '2h' },
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService, AuthGuard],
-  exports: [AuthService, JwtModule]
+  exports: [AuthService, JwtModule],
 })
-export class AuthModule { }
+export class AuthModule {}

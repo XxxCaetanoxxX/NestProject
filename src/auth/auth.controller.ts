@@ -1,21 +1,29 @@
-import { Controller, Get, Post, Body, Request, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Request,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signin.dto';
-import { AuthGuard } from './auth.guard'
-import { AuthenticatedRequest } from './authenticated-request'
+import { AuthGuard } from './auth.guard';
+import { AuthenticatedRequest } from './authenticated-request';
 import { Public } from './public-route';
 import { UserService } from 'src/user/user.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { ResponseUserDto } from 'src/user/dto/response-user.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { FindAllUsersDto } from 'src/user/dto/find-all-users.dto';
-
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService,
-    private readonly userService: UserService
-  ) { }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Public()
   @ApiOkResponse({
@@ -28,7 +36,6 @@ export class AuthController {
     return this.authService.signIn(signInDto.name, signInDto.password);
   }
 
-
   @ApiOkResponse({
     description: 'Returns logged user',
     type: ResponseUserDto,
@@ -36,6 +43,6 @@ export class AuthController {
   @Get('profile')
   @UseGuards(AuthGuard)
   getProfile(@Request() req: AuthenticatedRequest) {
-    return this.userService.findOne(req.user['userId'])
+    return this.userService.findOne(req.user['userId']);
   }
 }

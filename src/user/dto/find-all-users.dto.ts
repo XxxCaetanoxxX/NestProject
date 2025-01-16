@@ -1,7 +1,15 @@
-import { Type } from "class-transformer";
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsEnum, IsInt, IsOptional, IsString, Max, Min, MinLength } from "class-validator";
-import { Profile } from "@prisma/client";
+import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+  MinLength,
+} from 'class-validator';
+import { Profile } from '@prisma/client';
 
 export class FindAllUsersDto {
   @ApiPropertyOptional()
@@ -28,11 +36,10 @@ export class FindAllUsersDto {
   @MinLength(3)
   name?: string;
 
-
   @ApiPropertyOptional({
-    enum: Profile
+    enum: Profile,
   })
   @IsOptional()
   @IsEnum(Profile)
-  profile?: Profile
+  profile?: Profile;
 }

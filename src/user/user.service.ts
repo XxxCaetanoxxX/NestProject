@@ -1,54 +1,60 @@
-import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { HashingService } from 'src/hashing/hashing.service';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly hashingService: HashingService) { }
+    private readonly hashingService: HashingService,
+  ) {}
 
   async findByName(name: string) {
     const user = await this.prisma.user.findFirst({
       where: { name },
       include: {
-        cars: true
-      }
-    })
-    return user
+        cars: true,
+      },
+    });
+    return user;
   }
 
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await this.hashingService.hash(createUserDto.password)
+    const hashedPassword = await this.hashingService.hash(
+      createUserDto.password,
+    );
 
     const user = await this.prisma.user.create({
       data: {
         name: createUserDto.name,
         profile: createUserDto.profile,
-        password: hashedPassword
+        password: hashedPassword,
       },
       select: {
         id: true,
         name: true,
         profile: true,
-      }
-    })
+      },
+    });
     return user;
   }
 
   findAll({ limit, offset, ...dto }: FindAllUsersDto) {
     return this.prisma.user.findMany({
-
       where: {
         ...dto,
         //filtra por todos os atributos, exceto limit e offset que ja foram retirados
         //e pelo nome, que esta sendo filtrado abaixo
         name: {
-          contains: dto.name
+          contains: dto.name,
         },
       },
       take: limit,
@@ -57,8 +63,8 @@ export class UserService {
         id: true,
         name: true,
         profile: true,
-        cars: true
-      }
+        cars: true,
+      },
     });
   }
 
@@ -69,12 +75,12 @@ export class UserService {
         id: true,
         name: true,
         profile: true,
-        cars: true
-      }
-    })
+        cars: true,
+      },
+    });
 
     if (!user) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
     return user;
@@ -83,7 +89,7 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.findFirst({
       where: { id },
-      include: { cars: true }
+      include: { cars: true },
     });
 
     if (!user) {
@@ -93,7 +99,7 @@ export class UserService {
     let hashedPassword = user.password;
 
     // Caso haja uma senha válida no DTO, atualize a senha
-    if (updateUserDto.password && updateUserDto.password !== "") {
+    if (updateUserDto.password && updateUserDto.password !== '') {
       hashedPassword = await this.hashingService.hash(updateUserDto.password);
     }
 
@@ -108,17 +114,16 @@ export class UserService {
         id: true,
         name: true,
         cars: true,
-        profile: true
-      }
+        profile: true,
+      },
     });
 
     return updatedUser;
   }
 
   remove(id: number) {
-
     return this.prisma.user.delete({
-      where: { id }
-    })
+      where: { id },
+    });
   }
 }
