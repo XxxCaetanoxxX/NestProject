@@ -9,6 +9,7 @@ import { FindAllCarsDto } from './dto/find-all-cars.dto';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
+import { isArray } from 'class-validator';
 
 @ApiBearerAuth()
 @Controller('cars')
@@ -32,7 +33,6 @@ export class CarsController {
     type: [ResponseCarDto],
   })
   findAll(@Query() findAllCarsDto?: FindAllCarsDto) {
-    console.log(findAllCarsDto.isStocked); //esta retornando sempre true, mesmo ao passar false
     return this.carsService.findAll(findAllCarsDto);
   }
 

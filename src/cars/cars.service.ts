@@ -15,12 +15,11 @@ export class CarsService {
     });
   }
 
-  async findAll({ limit, offset, isStocked }: FindAllCarsDto) {
-    console.log(typeof isStocked) //boolean (.)
-
+  async findAll({ limit, offset, isStocked, ...dto }: FindAllCarsDto) {
     const cars = await this.prisma.car.findMany({
 
       where: {
+        id: { in: dto.ids },
         isStocked
       },
 
@@ -43,6 +42,13 @@ export class CarsService {
       data: updateCarDto
     })
     return car
+  }
+
+  updateMany({ isStocked }: UpdateCarDto) {
+    return this.prisma.car.updateMany({
+      where: { isStocked },
+      data: updateCarDto
+    })
   }
 
   remove(id: number) {

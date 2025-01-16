@@ -1,7 +1,5 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Test, TestingModule } from "@nestjs/testing";
-import { HashingService } from 'src/hashing/hashing.service';
-import { Profile } from '@prisma/client';
 import { randomInt } from 'crypto';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
