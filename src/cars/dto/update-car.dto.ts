@@ -4,10 +4,7 @@ import { ArrayNotEmpty, IsArray, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class UpdateCarDto extends PartialType(CreateCarDto) {
-    @ApiProperty({
-        type: "array",
-        description: 'Indicate the car\'s id',
-    })
+    @ApiPropertyOptional({ type: 'number', isArray: true })
     @IsArray()
     @ArrayNotEmpty()
     ids?: number[]

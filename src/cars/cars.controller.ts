@@ -10,6 +10,7 @@ import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery } from '@nest
 import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
 import { isArray } from 'class-validator';
+import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 
 @ApiBearerAuth()
 @Controller('cars')
@@ -58,16 +59,20 @@ export class CarsController {
     return this.carsService.update(id, updateCarDto);
   }
 
-  @Patch()
-  @ApiParam({ name: 'ids', type: Array })
+  @Patch('/update/many')
   @ApiOkResponse({
     description: 'update many cars',
-    type: ResponseCarDto,
+    schema: {
+      type: 'object',
+      properties: {
+        "count": { type: "number" }
+      },
+    }
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  updateMany(@Body() updateCarDto: UpdateCarDto) {
-    return this.carsService.updateMany(updateCarDto);
+  updateMany(@Body() updateManyCarsDto: UpdateManyCarsDto) {
+    return this.carsService.updateMany(updateManyCarsDto);
   }
 
   @Delete(':id')

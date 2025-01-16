@@ -3,6 +3,7 @@ import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { FindAllCarsDto } from './dto/find-all-cars.dto';
+import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 
 @Injectable()
 export class CarsService {
@@ -44,15 +45,15 @@ export class CarsService {
     return car
   }
 
-  updateMany({ ...updateCarDto }: UpdateCarDto) {
+  updateMany({ ...updateManyCarDto }: UpdateManyCarsDto) {
     return this.prisma.car.updateMany({
       where: {
         id: {
-          in: updateCarDto.ids
+          in: updateManyCarDto.ids
         }
       },
       data: {
-        isStocked: updateCarDto.isStocked
+        isStocked: updateManyCarDto.isStocked
       }
     })
   }
