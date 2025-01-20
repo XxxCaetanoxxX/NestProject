@@ -6,9 +6,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { HashingModule } from './hashing/hashing.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [CarsModule, UserModule, AuthModule, PrismaModule, HashingModule],
+  imports: [CarsModule, UserModule, AuthModule, PrismaModule, HashingModule, ConfigModule.forRoot()],
   providers: [
     {
       provide: APP_GUARD,

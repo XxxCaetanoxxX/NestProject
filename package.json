@@ -2,7 +2,7 @@
   "name": "estacionamento",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "caetano",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -21,7 +21,11 @@
     "dev": "node --watch --env-file=.env server.js"
   },
   "dependencies": {
+    "@swc/cli": "^0.5.2",
+    "@swc/core": "^1.10.4",
+    "@swc/jest": "^0.2.37",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",

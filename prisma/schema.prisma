@@ -19,6 +19,7 @@ model User {
   profile  Profile
   password String
   cars     Car[]
+  Test     Test[]
 }
 
 model Car {
@@ -28,3 +29,23 @@ model Car {
   userId    Int
   isStocked Boolean @default(false)
 }
+model Test {
+  id              Int      @id @default(autoincrement())
+  modifiedBy      User     @relation(fields: [modifiedById], references: [id])
+  modifiedById    Int
+  creationDate    DateTime @default(now())
+  updateDate      DateTime @updatedAt
+  versionNum      Int
+  history         HistoryTest[]
+}
+
+model HistoryTest {
+  id              Int      @id @default(autoincrement())
+  testId          Int
+  test            Test @relation(fields: [testId],references: [id])
+  creationDate    DateTime @default(now())
+  updateDate      DateTime @updatedAt
+  versionNumber   Int
+  method          String
+}
+
