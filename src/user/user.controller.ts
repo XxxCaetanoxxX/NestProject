@@ -51,7 +51,7 @@ export class UserController {
     description: 'Returns one user',
     type: ResponseUserDto,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: Number, required: true })
   findOne(@Param('id', ParseIntPipe) id: number) {
     console.log(typeof id);
     return this.userService.findOne(id);
@@ -65,7 +65,7 @@ export class UserController {
   @ApiParam({ name: 'id', type: Number })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: Number, required: true })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -79,7 +79,7 @@ export class UserController {
     description: 'Delete a user',
     type: ResponseDeleteUserDto,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: Number, required: true })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
   remove(@Param('id', ParseIntPipe) id: number) {
