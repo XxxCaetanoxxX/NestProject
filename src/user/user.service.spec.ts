@@ -5,10 +5,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HashingService } from 'src/hashing/hashing.service';
 import { Profile } from '@prisma/client';
 import { randomInt } from 'crypto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UserService', () => {
   let service: UserService;
-  let id: string;
+  let id: number;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,12 +19,12 @@ describe('UserService', () => {
     service = module.get<UserService>(UserService);
 
     const user: CreateUserDto = {
-      name: 'teste user',
+      name: 'teste user2',
       password: 'dpmg123',
       profile: Profile.DEFAULT,
     };
 
-    const res = await service.create(user);
+    const res = await service.create(user, 1);
     id = res.id;
     delete user.password;
     expect(res).toMatchObject(user);
@@ -41,7 +42,7 @@ describe('UserService', () => {
   });
 
   it('findOne', async () => {
-    const res = await service.findOne(id);
+    const res = await service.findOne(4);
 
     const properties = ['id', 'name', 'profile', 'cars'];
 
@@ -60,16 +61,19 @@ describe('UserService', () => {
     expect(res.length).not.toBeGreaterThan(1);
   });
 
-  it('update', async () => {
-    const name = `Paula ${randomInt(10)}`;
+  it.only('update', async () => {
+    const user = await service.findOne(3);
 
-    const res = await service.update(id, {
-      name,
-    });
+    console.log(user.name)
 
-    expect(res).toMatchObject({
-      name,
-    });
+    const res = await service.update(3, {
+      name: 'jessica',
+    },
+    )
+    console.log(res.name)
+
+    expect(res.name).not.toEqual(user.name);
+    expect(res.version).not.toEqual(user.version);
   });
 });
 

@@ -87,6 +87,16 @@ export class UserService {
         name: true,
         profile: true,
         cars: true,
+        creationDate: true,
+        userCreator: {
+          select:
+          {
+            id: true,
+            name: true
+          }
+        },
+        version: true,
+        updateDate: true
       },
     });
 
@@ -120,12 +130,15 @@ export class UserService {
         name: updateUserDto.name,
         profile: updateUserDto.profile,
         password: hashedPassword,
+        version: user.version + 1,
       },
       select: {
         id: true,
         name: true,
         cars: true,
         profile: true,
+        version: true,
+        updateDate: true,
       },
     });
 
