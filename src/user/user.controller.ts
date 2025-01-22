@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   ParseIntPipe,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +21,7 @@ import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
+import { AuthenticatedRequest } from 'src/auth/authenticated-request';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -33,8 +35,8 @@ export class UserController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Body() createUserDto: CreateUserDto, @Request() req: AuthenticatedRequest) {
+    return this.userService.create(createUserDto, req.user['userId']);
   }
 
   @Get()

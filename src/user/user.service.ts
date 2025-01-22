@@ -9,13 +9,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { HashingService } from 'src/hashing/hashing.service';
+import { request } from 'express';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly hashingService: HashingService,
-  ) {}
+  ) { }
 
   async findByName(name: string) {
     const user = await this.prisma.user.findFirst({
@@ -27,7 +28,7 @@ export class UserService {
     return user;
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto, id: number) {
     const hashedPassword = await this.hashingService.hash(
       createUserDto.password,
     );
@@ -37,6 +38,7 @@ export class UserService {
         name: createUserDto.name,
         profile: createUserDto.profile,
         password: hashedPassword,
+        userCreatorId: id,
       },
       select: {
         id: true,
@@ -64,6 +66,15 @@ export class UserService {
         name: true,
         profile: true,
         cars: true,
+        creationDate: true,
+        userCreator: {
+          select:
+          {
+            id: true,
+            name: true
+          }
+        },
+        updateDate: true,
       },
     });
   }

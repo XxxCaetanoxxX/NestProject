@@ -14,12 +14,18 @@ enum Profile {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  name     String
-  profile  Profile
-  password String
-  cars     Car[]
-  Test     Test[]
+  id            Int      @id @default(autoincrement())
+  name          String
+  profile       Profile
+  password      String
+  cars          Car[]
+  creationDate  DateTime @default(now())
+  updateDate    DateTime @updatedAt
+  version       Int      @default(autoincrement())
+  userCreator   User?    @relation("UserCreatedBy", fields: [userCreatorId], references: [id])
+  userCreatorId Int?
+
+  createdUsers User[] @relation("UserCreatedBy")
 }
 
 model Car {
@@ -29,23 +35,3 @@ model Car {
   userId    Int
   isStocked Boolean @default(false)
 }
-model Test {
-  id              Int      @id @default(autoincrement())
-  modifiedBy      User     @relation(fields: [modifiedById], references: [id])
-  modifiedById    Int
-  creationDate    DateTime @default(now())
-  updateDate      DateTime @updatedAt
-  versionNum      Int
-  history         HistoryTest[]
-}
-
-model HistoryTest {
-  id              Int      @id @default(autoincrement())
-  testId          Int
-  test            Test @relation(fields: [testId],references: [id])
-  creationDate    DateTime @default(now())
-  updateDate      DateTime @updatedAt
-  versionNumber   Int
-  method          String
-}
-
