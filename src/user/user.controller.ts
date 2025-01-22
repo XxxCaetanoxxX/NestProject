@@ -20,12 +20,11 @@ import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
-import { FindOneUserDto } from './dto/find-one-user.dto';
 
 @ApiBearerAuth()
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   @ApiOkResponse({
@@ -63,14 +62,15 @@ export class UserController {
     description: 'Returns an updated user',
     type: ResponseUserDto,
   })
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
   @ApiParam({ name: 'id', type: Number })
   update(
-    @Param('id', ParseIntPipe) params: FindOneUserDto,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.update(params.id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   //somente esse endpoint cai n prismaError 2025, não sei o motivo
@@ -82,7 +82,7 @@ export class UserController {
   @ApiParam({ name: 'id', type: Number })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  remove(@Param('id', ParseIntPipe) params: FindOneUserDto) {
-    return this.userService.remove(params.id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.remove(id);
   }
 }

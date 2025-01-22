@@ -6,22 +6,22 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
 
-     this.$use(async (params, next) => {
-      console.log('console log params', params); //pega todos os parametros
+    this.$use(async (params, next) => {
+      // console.log('console log params', params); //pega todos os parametros
 
-      const result = await next(params); // pega a response
-      console.log('console log do result', result)
+      // const result = await next(params); // pega a response
+      // console.log('console log do result', result)
 
 
-      // const {action, model} = params
+      // const { action, model } = params
       // console.log('console log endpoint', action, model)
-      // if(action === 'findFirst' && model === 'User') {
+      // if (action === 'findFirst' && model === 'User') {
       //   console.log('console log endpoint de login')
       // }
 
       return next(params);
     });
   }
-  
+
 
 }
