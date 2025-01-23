@@ -28,6 +28,12 @@ export class CarsService {
         id: true,
         name: true,
         isStocked: true,
+        user: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
         createdBy: {
           select: {
             id: true,
@@ -47,6 +53,26 @@ export class CarsService {
   async findOne(id: number) {
     const car = await this.prisma.car.findFirst({
       where: { id },
+      select: {
+        id: true,
+        name: true,
+        isStocked: true,
+        user: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        createdBy: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        creationDate: true,
+        updateDate: true,
+        version: true
+      }
     });
     return car;
   }
