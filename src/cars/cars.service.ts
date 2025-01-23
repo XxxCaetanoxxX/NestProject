@@ -24,7 +24,20 @@ export class CarsService {
         id: { in: dto.ids },
         isStocked,
       },
-
+      select: {
+        id: true,
+        name: true,
+        isStocked: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        creationDate: true,
+        updateDate: true,
+        version: true,
+      },
       take: limit,
       skip: offset,
     });
