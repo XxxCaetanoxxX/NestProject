@@ -10,6 +10,7 @@ import {
   Query,
   ParseIntPipe,
   Request,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,6 +23,8 @@ import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
 import { AuthenticatedRequest } from 'src/auth/authenticated-request';
+import { InterceptorTimeInterceptor } from 'src/interceptors/interceptor_time.interceptor';
+import { UpdateInterceptor } from 'src/interceptors/update.interceptor';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -35,8 +38,14 @@ export class UserController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  create(@Body() createUserDto: CreateUserDto, @Request() req: AuthenticatedRequest) {
-    return this.userService.create(createUserDto, req.user['userId']);
+  @UseInterceptors(InterceptorTimeInterceptor)
+  create(
+    @Body() createUserDto: CreateUserDto,
+    @Request() req: AuthenticatedRequest) {
+    createUserDto.creationDate = req['creationDate'];
+    createUserDto.userCreatorId = req.user['userId'];
+    console.log({ createUserDto });
+    return this.userService.create(createUserDto);
   }
 
   @Get()
@@ -67,11 +76,14 @@ export class UserController {
   @ApiParam({ name: 'id', type: Number })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
+  @UseInterceptors(UpdateInterceptor)
   @ApiParam({ name: 'id', type: Number, required: true })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
+    @Request() req: AuthenticatedRequest
   ) {
+    updateUserDto.updateDate = req['updateDate'];
     return this.userService.update(id, updateUserDto);
   }
 

@@ -28,7 +28,7 @@ export class UserService {
     return user;
   }
 
-  async create(createUserDto: CreateUserDto, id: number) {
+  async create(createUserDto: CreateUserDto) {
     const hashedPassword = await this.hashingService.hash(
       createUserDto.password,
     );
@@ -38,12 +38,16 @@ export class UserService {
         name: createUserDto.name,
         profile: createUserDto.profile,
         password: hashedPassword,
-        userCreatorId: id,
+        userCreatorId: createUserDto.userCreatorId,
+        creationDate: createUserDto.creationDate,
+        updateDate: createUserDto.creationDate,
+        version: 1
       },
       select: {
         id: true,
         name: true,
         profile: true,
+        creationDate: true,
       },
     });
     return user;
@@ -130,7 +134,7 @@ export class UserService {
         name: updateUserDto.name,
         profile: updateUserDto.profile,
         password: hashedPassword,
-        version: user.version,
+        version: user.version + 1,
         updateDate: new Date(),
       },
       select: {

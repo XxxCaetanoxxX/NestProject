@@ -7,6 +7,8 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signin.dto';
@@ -17,13 +19,15 @@ import { UserService } from 'src/user/user.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { ResponseUserDto } from 'src/user/dto/response-user.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { InterceptorTimeInterceptor } from 'src/interceptors/interceptor_time.interceptor';
+import { sign } from 'crypto';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   @Public()
   @ApiOkResponse({
@@ -33,7 +37,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.name, signInDto.password);
+    return this.authService.signIn(signInDto);
   }
 
   @ApiOkResponse({

@@ -19,9 +19,9 @@ model User {
   profile       Profile
   password      String
   cars          Car[]
-  creationDate  DateTime @default(now())
-  updateDate    DateTime @updatedAt
-  version       Int      @default(1)
+  creationDate  DateTime
+  updateDate    DateTime
+  version       Int
   userCreator   User?    @relation("UserCreatedBy", fields: [userCreatorId], references: [id])
   userCreatorId Int?
 
@@ -41,5 +41,3 @@ model Car {
   createdBy    User     @relation("CarCreatedBy", fields: [createdById], references: [id])
   createdById  Int
 }
-
-//sempre que tem mais de um relacionamento, tem que nomear a relação?
