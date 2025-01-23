@@ -67,6 +67,7 @@ export class UserService {
         profile: true,
         cars: true,
         creationDate: true,
+        updateDate: true,
         userCreator: {
           select:
           {
@@ -74,7 +75,6 @@ export class UserService {
             name: true
           }
         },
-        updateDate: true,
       },
     });
   }
@@ -88,6 +88,7 @@ export class UserService {
         profile: true,
         cars: true,
         creationDate: true,
+        updateDate: true,
         userCreator: {
           select:
           {
@@ -96,7 +97,6 @@ export class UserService {
           }
         },
         version: true,
-        updateDate: true
       },
     });
 
@@ -130,7 +130,8 @@ export class UserService {
         name: updateUserDto.name,
         profile: updateUserDto.profile,
         password: hashedPassword,
-        version: user.version + 1,
+        version: user.version,
+        updateDate: new Date(),
       },
       select: {
         id: true,

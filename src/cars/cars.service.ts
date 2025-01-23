@@ -7,11 +7,14 @@ import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 
 @Injectable()
 export class CarsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
-  create(createCarDto: CreateCarDto) {
+  create(createCarDto: CreateCarDto, id: number) {
     return this.prisma.car.create({
-      data: createCarDto,
+      data: {
+        ...createCarDto,
+        createdById: id,
+      }
     });
   }
 
@@ -38,7 +41,11 @@ export class CarsService {
   async update(id: number, updateCarDto: UpdateCarDto) {
     const car = await this.prisma.car.update({
       where: { id },
-      data: updateCarDto,
+      data: {
+        ...updateCarDto,
+        version: { increment: 1 },
+        updateDate: new Date(),
+      },
     });
     return car;
   }

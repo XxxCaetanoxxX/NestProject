@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   ParseIntPipe,
+  Request
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -21,11 +22,12 @@ import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
 import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
+import { AuthenticatedRequest } from 'src/auth/authenticated-request';
 
 @ApiBearerAuth()
 @Controller('cars')
 export class CarsController {
-  constructor(private readonly carsService: CarsService) {}
+  constructor(private readonly carsService: CarsService) { }
 
   @Post()
   @ApiOkResponse({
@@ -34,8 +36,8 @@ export class CarsController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  create(@Body() createCarDto: CreateCarDto) {
-    return this.carsService.create(createCarDto);
+  create(@Body() createCarDto: CreateCarDto, @Request() req: AuthenticatedRequest) {
+    return this.carsService.create(createCarDto, req.user['userId']);
   }
 
   @Get()
