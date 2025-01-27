@@ -44,7 +44,7 @@ export class UserController {
     @Request() req: AuthenticatedRequest) {
     createUserDto.creationDate = req['creationDate'];
     createUserDto.userCreatorId = req.user['userId'];
-    console.log({ createUserDto });
+    createUserDto.updateDate = req['creationDate'];
     return this.userService.create(createUserDto);
   }
 

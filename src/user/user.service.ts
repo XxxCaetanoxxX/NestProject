@@ -9,7 +9,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllUsersDto } from './dto/find-all-users.dto';
 import { HashingService } from 'src/hashing/hashing.service';
-import { request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -28,26 +27,27 @@ export class UserService {
     return user;
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create({password,...createUserDto}: CreateUserDto) {
     const hashedPassword = await this.hashingService.hash(
-      createUserDto.password,
+      password,
     );
 
     const user = await this.prisma.user.create({
       data: {
-        name: createUserDto.name,
-        profile: createUserDto.profile,
+        ...createUserDto,
         password: hashedPassword,
-        userCreatorId: createUserDto.userCreatorId,
-        creationDate: createUserDto.creationDate,
-        updateDate: createUserDto.creationDate,
-        version: 1
       },
       select: {
         id: true,
         name: true,
         profile: true,
         creationDate: true,
+        userCreator: {
+          select:{
+            id: true,
+            name: true
+          }
+        },
       },
     });
     return user;
@@ -67,9 +67,22 @@ export class UserService {
       skip: offset,
       select: {
         id: true,
+        version:true,
         name: true,
         profile: true,
-        cars: true,
+        cars: {
+          select: {
+            id: true,
+            name: true,
+            isStocked: true,
+            createdBy: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
+        },
         creationDate: true,
         updateDate: true,
         userCreator: {
@@ -111,7 +124,7 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, {password, ...updateUserDto}: UpdateUserDto) {
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: { cars: true },
@@ -124,18 +137,16 @@ export class UserService {
     let hashedPassword = user.password;
 
     // Caso haja uma senha válida no DTO, atualize a senha
-    if (updateUserDto.password && updateUserDto.password !== '') {
-      hashedPassword = await this.hashingService.hash(updateUserDto.password);
+    if (password && password !== '') {
+      hashedPassword = await this.hashingService.hash(password);
     }
 
     const updatedUser = await this.prisma.user.update({
       where: { id },
       data: {
-        name: updateUserDto.name,
-        profile: updateUserDto.profile,
+        ...updateUserDto,
         password: hashedPassword,
         version: user.version + 1,
-        updateDate: new Date(),
       },
       select: {
         id: true,

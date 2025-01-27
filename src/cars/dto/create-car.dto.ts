@@ -6,12 +6,13 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
+import { AuditDto } from 'src/interceptors/audit.dto';
 
-export class CreateCarDto {
+export class CreateCarDto extends AuditDto{
   @ApiProperty()
-  @IsString({ message: 'name must be a string' })
-  @MinLength(2, { message: 'name must to have more than 2 characters' })
-  @IsNotEmpty({ message: "name can't be empty" })
+  @IsString()
+  @MinLength(2)
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
