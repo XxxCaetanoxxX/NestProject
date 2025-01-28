@@ -10,22 +10,38 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       console.log('console log params', params); //pega todos os parametros
 
       const result = await next(params); // pega a response
-      console.log('console log do result', result)
+      console.log('console log do result', result.updatedById);
 
       const { action, model } = params
-      console.log('console log endpoint', action, model)
-      if (action === 'findFirst' || model === 'User') {
-        console.log('console log endpoint de login')
-        // await this.userAudit.create({
-        //   data: {
-        //     version: 1,
-        //     responsibleId: result.id //id da pessoa logada
-        //   }
-        // })
-        console.log('created')
+      if (action === 'update' || action === 'create') {
+        await this.auditLog.create({
+          data: {
+            model: model,
+            method: actionToHttpMethod(action),
+            objectId: result.id,
+            userId: action === 'update' ?
+              result.updatedById :
+              result.createdById,
+            timestamp: new Date()
+          },
+        })
       }
-
       return result;
     });
+  }
+}
+// update user result.updatedById
+// create user result.userCreatorId
+// update a car result.updatedById
+// create a car result.createdById
+
+function actionToHttpMethod(action: string): string {
+  switch (action.toLowerCase()) {
+    case 'create':
+      return 'POST';
+    case 'update':
+      return 'PATCH';
+    default:
+      throw new Error(`Unsupported action: ${action}`);
   }
 }

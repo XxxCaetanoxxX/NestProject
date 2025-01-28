@@ -27,7 +27,7 @@ export class UserService {
     return user;
   }
 
-  async create({password,...createUserDto}: CreateUserDto) {
+  async create({ password, ...createUserDto }: CreateUserDto) {
     const hashedPassword = await this.hashingService.hash(
       password,
     );
@@ -42,9 +42,9 @@ export class UserService {
         name: true,
         profile: true,
         creationDate: true,
-        userCreator: {
-          select:{
-            id: true,
+        createdById: true,
+        createdBy: {
+          select: {
             name: true
           }
         },
@@ -67,7 +67,7 @@ export class UserService {
       skip: offset,
       select: {
         id: true,
-        version:true,
+        version: true,
         name: true,
         profile: true,
         cars: {
@@ -85,7 +85,7 @@ export class UserService {
         },
         creationDate: true,
         updateDate: true,
-        userCreator: {
+        createdBy: {
           select:
           {
             id: true,
@@ -106,7 +106,7 @@ export class UserService {
         cars: true,
         creationDate: true,
         updateDate: true,
-        userCreator: {
+        createdBy: {
           select:
           {
             id: true,
@@ -124,7 +124,7 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, {password, ...updateUserDto}: UpdateUserDto) {
+  async update(id: number, { password, ...updateUserDto }: UpdateUserDto) {
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: { cars: true },
@@ -155,6 +155,13 @@ export class UserService {
         profile: true,
         version: true,
         updateDate: true,
+        updatedById: true,
+        updatedBy: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       },
     });
 

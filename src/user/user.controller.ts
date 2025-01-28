@@ -43,7 +43,7 @@ export class UserController {
     @Body() createUserDto: CreateUserDto,
     @Request() req: AuthenticatedRequest) {
     createUserDto.creationDate = req['creationDate'];
-    createUserDto.userCreatorId = req.user['userId'];
+    createUserDto.createdById = req.user['userId'];
     createUserDto.updateDate = req['creationDate'];
     return this.userService.create(createUserDto);
   }
@@ -83,6 +83,7 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @Request() req: AuthenticatedRequest
   ) {
+    updateUserDto.updatedById = req.user['userId'];
     updateUserDto.updateDate = req['updateDate'];
     return this.userService.update(id, updateUserDto);
   }

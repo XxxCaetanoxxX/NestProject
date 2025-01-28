@@ -1,10 +1,6 @@
 import { IsOptional, IsDate, IsNumber } from 'class-validator';
 
 export class AuditDto {
-  @IsOptional()
-  @IsNumber()
-  userCreatorId?: number;
-
   @IsDate()
   @IsOptional()
   creationDate?: Date;
@@ -20,4 +16,8 @@ export class AuditDto {
   @IsNumber()
   @IsOptional()
   createdById: number
+
+  @IsNumber()
+  @IsOptional()
+  updatedById?: number
 }

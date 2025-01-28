@@ -80,6 +80,7 @@ export class CarsController {
     @Body() updateCarDto: UpdateCarDto,
     @Request() req: AuthenticatedRequest
   ) {
+    updateCarDto.updatedById = req.user['userId'];
     updateCarDto.updateDate = req['updateDate'];
     return this.carsService.update(id, updateCarDto);
   }

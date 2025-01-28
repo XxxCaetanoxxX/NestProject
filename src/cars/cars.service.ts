@@ -78,9 +78,6 @@ export class CarsService {
   }
 
   async update(id: number, { version, ...updateCarDto }: UpdateCarDto) {
-
-    console.log(version, updateCarDto);
-
     const car = await this.prisma.car.update({
       where: { id },
       data: {
@@ -101,6 +98,12 @@ export class CarsService {
         createdBy: {
           select: {
             id: true,
+            name: true
+          }
+        },
+        updatedById: true,
+        updatedBy: {
+          select: {
             name: true
           }
         },
