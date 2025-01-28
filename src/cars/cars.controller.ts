@@ -40,9 +40,10 @@ export class CarsController {
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
   @UseInterceptors(CreationInterceptor)
-  create(@Body() createCarDto: CreateCarDto, @Request() req: AuthenticatedRequest) {
-    createCarDto.creationDate = req['creationDate']
-    createCarDto.updateDate = req['creationDate']
+  create(@Body() createCarDto: CreateCarDto,
+    @Request() req: AuthenticatedRequest) {
+    createCarDto.creationDate = req['creationDate'];
+    createCarDto.updateDate = req['creationDate'];
     return this.carsService.create(createCarDto, req.user['userId']);
   }
 

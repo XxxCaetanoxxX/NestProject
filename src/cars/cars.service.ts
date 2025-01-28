@@ -9,7 +9,7 @@ import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 export class CarsService {
   constructor(private readonly prisma: PrismaService) { }
 
-  create({ ...createCarDto }: CreateCarDto, id: number) {
+  create(createCarDto: CreateCarDto, id: number) {
     return this.prisma.car.create({
       data: {
         ...createCarDto,
