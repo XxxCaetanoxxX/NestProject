@@ -19,7 +19,7 @@ import { UserService } from 'src/user/user.service';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { ResponseUserDto } from 'src/user/dto/response-user.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { InterceptorTimeInterceptor } from 'src/interceptors/interceptor_time.interceptor';
+import { InterceptorTimeInterceptor } from 'src/interceptors/creation.interceptor';
 import { sign } from 'crypto';
 
 @Controller('auth')

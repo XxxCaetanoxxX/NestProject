@@ -35,9 +35,9 @@ model Car {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
   isStocked    Boolean  @default(false)
-  creationDate DateTime @default(now())
-  updateDate   DateTime @updatedAt
-  version      Int      @default(1)
+  creationDate DateTime
+  updateDate   DateTime
+  version      Int
   createdBy    User     @relation("CarCreatedBy", fields: [createdById], references: [id])
   createdById  Int
 }

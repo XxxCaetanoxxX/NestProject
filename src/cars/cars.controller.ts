@@ -9,7 +9,8 @@ import {
   UseGuards,
   Query,
   ParseIntPipe,
-  Request
+  Request,
+  UseInterceptors
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -23,6 +24,8 @@ import { ResponseCarDto } from './dto/response-car.dto';
 import { ResponseDeleteCarDto } from './dto/response-delete-car.dto';
 import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 import { AuthenticatedRequest } from 'src/auth/authenticated-request';
+import { CreationInterceptor } from 'src/interceptors/creation.interceptor';
+import { UpdateInterceptor } from 'src/interceptors/update.interceptor';
 
 @ApiBearerAuth()
 @Controller('cars')
@@ -36,7 +39,10 @@ export class CarsController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
+  @UseInterceptors(CreationInterceptor)
   create(@Body() createCarDto: CreateCarDto, @Request() req: AuthenticatedRequest) {
+    createCarDto.creationDate = req['creationDate']
+    createCarDto.updateDate = req['creationDate']
     return this.carsService.create(createCarDto, req.user['userId']);
   }
 
@@ -66,11 +72,14 @@ export class CarsController {
     type: ResponseCarDto,
   })
   @UseGuards(RolesGuard)
+  @UseInterceptors(UpdateInterceptor)
   @Roles(Role.MANAGER, Role.ADMIN)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCarDto: UpdateCarDto,
+    @Request() req: AuthenticatedRequest
   ) {
+    updateCarDto.updateDate = req['updateDate'];
     return this.carsService.update(id, updateCarDto);
   }
 

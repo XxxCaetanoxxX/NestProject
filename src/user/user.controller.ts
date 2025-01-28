@@ -23,7 +23,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { ResponseUserDto } from './dto/response-user.dto';
 import { ResponseDeleteUserDto } from './dto/response-delete-user.dto';
 import { AuthenticatedRequest } from 'src/auth/authenticated-request';
-import { InterceptorTimeInterceptor } from 'src/interceptors/interceptor_time.interceptor';
+import { CreationInterceptor } from 'src/interceptors/creation.interceptor';
 import { UpdateInterceptor } from 'src/interceptors/update.interceptor';
 
 @ApiBearerAuth()
@@ -38,7 +38,7 @@ export class UserController {
   })
   @UseGuards(RolesGuard)
   @Roles(Role.MANAGER, Role.ADMIN)
-  @UseInterceptors(InterceptorTimeInterceptor)
+  @UseInterceptors(CreationInterceptor)
   create(
     @Body() createUserDto: CreateUserDto,
     @Request() req: AuthenticatedRequest) {

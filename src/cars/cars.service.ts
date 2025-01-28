@@ -9,7 +9,7 @@ import { UpdateManyCarsDto } from './dto/update-many-cars.dto';
 export class CarsService {
   constructor(private readonly prisma: PrismaService) { }
 
-  create(createCarDto: CreateCarDto, id: number) {
+  create({ ...createCarDto }: CreateCarDto, id: number) {
     return this.prisma.car.create({
       data: {
         ...createCarDto,
@@ -77,7 +77,7 @@ export class CarsService {
     return car;
   }
 
-  async update(id: number, {updateDate, version, ...updateCarDto}: UpdateCarDto) {
+  async update(id: number, { version, ...updateCarDto }: UpdateCarDto) {
 
     console.log(version, updateCarDto);
 
@@ -86,7 +86,6 @@ export class CarsService {
       data: {
         ...updateCarDto,
         version: { increment: 1 },
-        updateDate: new Date(),
       },
       select: {
         id: true,
